@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Apolo - Optimizador de Tokens</title>
+    <style>
+        /* CSS GENERAL - ESTILO ESPACIAL Y TECH */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #05070a; /* Negro muy profundo */
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px),
+                radial-gradient(rgba(255, 0, 255, 0.1), transparent 40%); /* Nebulosa Rosa/Gris muy tenue */
+            background-size: 550px 550px, 350px 350px, 250px 250px, 100% 100%;
+            background-position: 0 0, 40px 60px, 130px 270px, center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* CABECERA */
+        header {
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #00ffff, #007bff); /* Gradiente Cyan a Azul Eléctrico */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            letter-spacing: 2px;
+            font-weight: 300;
+            margin-top: 0;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            margin-top: 30px;
+            max-width: 600px;
+            color: #cccccc;
+            font-weight: 300;
+        }
+
+        /* CUERPO INFORMATIVO */
+        .info-container {
+            margin: 50px 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05); /* Panel translúcido */
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .info-text strong {
+            color: #00ffff; /* Resaltado en Cyan */
+        }
+
+        /* SECCIÓN DE CONTACTO */
+        .contact-section {
+            margin-top: auto;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .contact-call {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-round {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-round:hover {
+            transform: scale(1.1);
+        }
+
+        /* Botón WhatsApp */
+        .btn-whatsapp {
+            background-color: #25d366; /* Verde WhatsApp */
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+        }
+
+        /* Botón Gmail */
+        .btn-gmail {
+            background-color: #00cccc; /* Cyan */
+            box-shadow: 0 0 15px rgba(0, 204, 204, 0.5);
+        }
+
+        .btn-round img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(0) invert(1); /* Pone los iconos en blanco */
+        }
+
+        /* PIE DE PÁGINA */
+        footer {
+            width: 100%;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: #888888;
+            margin: 0;
+        }
+
+        /* RESPONSIVE (Celulares) */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
+            .info-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Proyecto Apolo</h1>
+        <p class="subtitle">OPTIMIZADOR DE TOKENS</p>
+        <p class="tagline">Una herramienta diseñada para maximizar tu eficiencia y reducir drásticamente el costo de tus tokens.</p>
+    </header>
+
+    <div class="info-container">
+        <p class="info-text">
+            Hoy, muchas empresas desperdician presupuesto enviando datos innecesarios a la IA. <strong>Proyecto Apolo</strong> actúa como un filtro inteligente: optimiza cada consulta para que sigas usando tu IA de confianza, pero pagando solo lo que realmente necesitás.
+        </p>
+    </div>
+
+    <div class="contact-section">
+        <p class="contact-call">Solicitá más información a:</p>
+        <div class="contact-buttons">
+            <a href="https://wa.me/5491148880823?text=Hola,%20solicito%20más%20información%20sobre%20Proyecto%20Apolo" class="btn-round btn-whatsapp" target="_blank" title="Contactar por WhatsApp">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </a>
+            <a href="mailto:apolosoft2026@gmail.com?subject=Solicitud%20de%20Información%20-%20Proyecto%20Apolo" class="btn-round btn-gmail" title="Contactar por Email">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail">
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p class="footer-text">© 2026 Proyecto Apolo - Buenos Aires, Argentina.</p>
+    </footer>
+
+</body>
+</html>
