@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Apolo - Optimizador de Tokens</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #000 url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=1920') no-repeat center center fixed;
+            /* IMAGEN DE FONDO OSCURA Y DRAMÁTICA */
+            background: #000 url('https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Inter', sans-serif;
             color: #ffffff;
@@ -20,60 +21,66 @@
         }
 
         header {
-            margin-top: 80px;
+            margin-top: 70px;
             text-align: center;
+            padding: 0 20px;
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3.5rem;
             margin: 0;
-            background: linear-gradient(180deg, #00f2fe 0%, #0077ff 100%);
+            /* Gradiente Cyan Eléctrico */
+            background: linear-gradient(180deg, #00ffff 0%, #007bff 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));
+            /* Brillo neón suave */
+            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+            font-weight: 700;
         }
 
         .subtitle {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 5px;
-            color: #ffffff;
+            font-size: 1rem;
+            letter-spacing: 6px;
+            color: rgba(255, 255, 255, 0.8);
             margin-top: 10px;
-            opacity: 0.9;
+            font-weight: 400;
         }
 
         .tagline {
-            font-size: 1.2rem;
-            margin-top: 40px;
+            font-size: 1.15rem;
+            margin-top: 35px;
             max-width: 600px;
             font-weight: 300;
-            color: #e0e0e0;
-            line-height: 1.4;
+            color: #d1d1d1;
+            line-height: 1.5;
             text-align: center;
         }
 
         .info-container {
-            margin: 60px 20px;
+            margin: 55px 20px;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px); /* Efecto vidrio */
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Panel translúcido OSCURO */
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             max-width: 650px;
             text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
         .info-text {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.8;
-            color: #d1d1d1;
+            color: #e0e0e0;
         }
 
         .info-text strong {
-            color: #00f2fe;
+            color: #00ffff;
             font-weight: 600;
         }
 
@@ -84,53 +91,57 @@
         }
 
         .contact-call {
-            font-size: 1rem;
-            color: #aaa;
+            font-size: 0.95rem;
+            color: #999;
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            font-weight: 400;
         }
 
         .contact-buttons {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             justify-content: center;
         }
 
         .btn-round {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .btn-round:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #00f2fe;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
 
         .btn-round img {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
         }
 
         footer {
-            padding: 30px;
+            padding: 25px;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
             letter-spacing: 1px;
+            text-align: center;
+            width: 100%;
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
+            h1 { font-size: 2.1rem; }
             .info-container { padding: 25px; }
+            .contact-buttons { gap: 15px; }
         }
     </style>
 </head>
@@ -152,10 +163,10 @@
         <p class="contact-call">Solicitá más información a:</p>
         <div class="contact-buttons">
             <a href="https://wa.me/5491148880823" class="btn-round" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+                <img src="https://img.icons8.com/material-outlined/96/FFFFFF/whatsapp.png" alt="WhatsApp">
             </a>
             <a href="mailto:apolosoft2026@gmail.com" class="btn-round">
-                <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email">
+                <img src="https://img.icons8.com/material-outlined/96/FFFFFF/new-post.png" alt="Email">
             </a>
         </div>
     </div>
