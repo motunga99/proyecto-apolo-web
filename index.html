@@ -615,8 +615,8 @@ function setLang(lang) {
   document.querySelector('.btn-primary').textContent = t.ctaBtn;
   document.querySelector('.cta-title').innerHTML = t.ctaFinal;
   document.querySelector('.cta-sub').textContent = t.ctaSub;
-  document.querySelector('.nav-cta').textContent = t.navDemo;
-  const contactLinks = document.querySelectorAll('.contact-link');
-  contactLinks[0].textContent = t.email;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
   contactLinks[1].textContent = t.wa;
   document.querySelectorAll('.lang-btn').forEa
