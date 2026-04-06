@@ -1,179 +1,673 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Apolo - Optimizador de Tokens</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            /* IMAGEN DE FONDO OSCURA Y DRAMÁTICA */
-            background: #000 url('https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto Apolo® — Optimizador de Tokens para IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ed;
+  --cyan: #00e5c8;
+  --cyan-dim: rgba(0,229,200,0.12);
+  --gray: #1a1a1a;
+  --gray-mid: #2a2a2a;
+  --gray-text: #888;
+  --border: rgba(255,255,255,0.07);
+}
 
-        header {
-            margin-top: 70px;
-            text-align: center;
-            padding: 0 20px;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            margin: 0;
-            /* Gradiente Cyan Eléctrico */
-            background: linear-gradient(180deg, #00ffff 0%, #007bff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            /* Brillo neón suave */
-            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
-            font-weight: 700;
-        }
+html { scroll-behavior: smooth; }
 
-        .subtitle {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 6px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 10px;
-            font-weight: 400;
-        }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-        .tagline {
-            font-size: 1.15rem;
-            margin-top: 35px;
-            max-width: 600px;
-            font-weight: 300;
-            color: #d1d1d1;
-            line-height: 1.5;
-            text-align: center;
-        }
+/* CURSOR PERSONALIZADO */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,229,200,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
 
-        .info-container {
-            margin: 55px 20px;
-            padding: 40px;
-            /* Panel translúcido OSCURO */
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            max-width: 650px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
+/* NAVEGACIÓN */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 60px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+}
+nav.scrolled {
+  border-color: var(--border);
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(16px);
+}
+.nav-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--gray-text);
+  text-decoration: none;
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-decoration: none;
+  border: 1px solid rgba(0,229,200,0.3);
+  padding: 10px 24px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nav-cta:hover {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+}
 
-        .info-text {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: #e0e0e0;
-        }
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 140px 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,200,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,200,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  max-width: 900px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--cyan);
+}
+.hero-desc {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--gray-text);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 60px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--cyan);
+  color: var(--black);
+  padding: 16px 40px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+.hero-stat {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gray-text);
+  letter-spacing: 1px;
+}
+.hero-stat strong {
+  display: block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--white);
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
 
-        .info-text strong {
-            color: #00ffff;
-            font-weight: 600;
-        }
+/* TICKER */
+.ticker {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 25s linear infinite;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+.ticker-inner span { color: var(--cyan); margin: 0 20px; }
 
-        .contact-section {
-            margin-top: auto;
-            margin-bottom: 50px;
-            text-align: center;
-        }
+/* SECCIÓN: CÓMO FUNCIONA */
+.section {
+  padding: 120px 60px;
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  max-width: 600px;
+  margin-bottom: 80px;
+}
+.section-title em { font-style: italic; }
 
-        .contact-call {
-            font-size: 0.95rem;
-            color: #999;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 400;
-        }
+/* PASOS */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.step {
+  background: var(--black);
+  padding: 48px 40px;
+  position: relative;
+  transition: background 0.3s;
+}
+.step:hover { background: var(--gray); }
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  display: block;
+}
+.step-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.step-desc {
+  font-size: 14px;
+  color: var(--gray-text);
+  line-height: 1.7;
+}
 
-        .contact-buttons {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-        }
+/* MÉTRICAS */
+.metrics {
+  padding: 0 60px 120px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.metric {
+  background: var(--black);
+  padding: 48px 40px;
+  transition: background 0.3s;
+}
+.metric:hover { background: var(--gray); }
+.metric-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 56px;
+  letter-spacing: -3px;
+  color: var(--white);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.metric-value span { color: var(--cyan); }
+.metric-label {
+  font-size: 13px;
+  color: var(--gray-text);
+  line-height: 1.5;
+}
 
-        .btn-round {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+/* COMPATIBILIDAD */
+.compat {
+  padding: 0 60px 120px;
+}
+.compat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.compat-item {
+  background: var(--black);
+  padding: 32px 28px;
+  transition: background 0.3s;
+}
+.compat-item:hover { background: var(--gray); }
+.compat-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.compat-tag {
+  font-size: 11px;
+  color: var(--gray-text);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 
-        .btn-round:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
+/* MODELO DE NEGOCIO */
+.model-section {
+  padding: 0 60px 120px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.model-text .section-title { margin-bottom: 24px; }
+.model-desc {
+  font-size: 16px;
+  color: var(--gray-text);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.model-formula {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  padding: 32px;
+  line-height: 2.2;
+  color: var(--gray-text);
+}
+.model-formula .highlight { color: var(--cyan); }
+.model-formula .result { color: var(--white); font-size: 15px; }
 
-        .btn-round img {
-            width: 32px;
-            height: 32px;
-        }
+/* CTA FINAL */
+.cta-section {
+  padding: 120px 60px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,229,200,0.06) 0%, transparent 70%);
+}
+.cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(40px, 5vw, 72px);
+  letter-spacing: -2px;
+  max-width: 700px;
+  margin: 0 auto 24px;
+  line-height: 1.05;
+}
+.cta-title em { font-style: italic; color: var(--cyan); }
+.cta-sub {
+  font-size: 16px;
+  color: var(--gray-text);
+  margin-bottom: 48px;
+}
+.contact-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.contact-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 14px 32px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.contact-link:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-dim);
+}
 
-        footer {
-            padding: 25px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px;
-            text-align: center;
-            width: 100%;
-        }
+/* FOOTER */
+footer {
+  padding: 40px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+.footer-logo span { color: var(--cyan); }
+.footer-reg {
+  font-size: 11px;
+  color: var(--gray-text);
+  letter-spacing: 1px;
+}
 
-        @media (max-width: 600px) {
-            h1 { font-size: 2.1rem; }
-            .info-container { padding: 25px; }
-            .contact-buttons { gap: 15px; }
-        }
-    </style>
+/* IDIOMA */
+.lang-switch {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 200;
+  display: flex;
+  gap: 8px;
+}
+.lang-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  background: rgba(10,10,10,0.9);
+  color: var(--gray-text);
+  cursor: none;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.lang-btn.active, .lang-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 120px 24px 60px; }
+  .section { padding: 80px 24px; }
+  .metrics, .compat-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr; }
+  .model-section { grid-template-columns: 1fr; gap: 40px; padding: 0 24px 80px; }
+  .metrics { padding: 0 24px 80px; }
+  .compat { padding: 0 24px 80px; }
+  .cta-section { padding: 80px 24px; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>Proyecto Apolo</h1>
-        <p class="subtitle">OPTIMIZADOR DE TOKENS</p>
-        <p class="tagline">Una herramienta diseñada para maximizar tu eficiencia y reducir drásticamente el costo de tus tokens.</p>
-    </header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <div class="info-container">
-        <p class="info-text">
-            Hoy, muchas empresas desperdician presupuesto enviando datos innecesarios a la IA. <strong>Proyecto Apolo</strong> actúa como un filtro inteligente: optimiza cada consulta para que sigas usando tu IA de confianza, pero pagando solo lo que realmente necesitás.
-        </p>
+<nav id="nav">
+  <a href="#" class="nav-logo">Proyecto <span>Apolo</span>®</a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#compatibilidad">Compatibilidad</a></li>
+    <li><a href="#modelo">Modelo</a></li>
+  </ul>
+
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <p class="hero-eyebrow">Marca Registrada · Buenos Aires, Argentina</p>
+  <h1 class="hero-title">Tu IA,<br><em>la mitad</em><br>del costo.</h1>
+  <p class="hero-desc">Optimizamos el texto antes de enviarlo a cualquier modelo de inteligencia artificial. Mismo resultado. Menos tokens. Menos gasto.</p>
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">Conocé más</a>
+    <div class="hero-stat">
+      <strong>50<span style="color:var(--cyan);font-size:24px">%</span></strong>
+      reducción promedio de tokens
     </div>
+  </div>
+</section>
 
-    <div class="contact-section">
-        <p class="contact-call">Solicitá más información a:</p>
-        <div class="contact-buttons">
-            <a href="https://wa.me/5491148880823" class="btn-round" target="_blank">
-                <img src="https://img.icons8.com/material-outlined/96/FFFFFF/whatsapp.png" alt="WhatsApp">
-            </a>
-            <a href="mailto:apolosoft2026@gmail.com" class="btn-round">
-                <img src="https://img.icons8.com/material-outlined/96/FFFFFF/new-post.png" alt="Email">
-            </a>
-        </div>
+<div class="ticker">
+  <div class="ticker-inner">
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+  </div>
+</div>
+
+<section class="section" id="como-funciona">
+  <p class="section-label">Motor V15</p>
+  <h2 class="section-title">Inteligencia aplicada <em>antes</em> de la IA.</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01 — Ingesta</span>
+      <h3 class="step-title">Cargá tu documento</h3>
+      <p class="step-desc">PDF, Word, Excel, imágenes escaneadas con OCR. Arrastrar y soltar. Sin configuración previa.</p>
     </div>
+    <div class="step">
+      <span class="step-num">02 — Optimización</span>
+      <h3 class="step-title">El Motor V15 actúa</h3>
+      <p class="step-desc">Nuestro algoritmo de procesamiento lingüístico elimina el ruido semántico y conserva el 100% de la información relevante.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03 — Resultado</span>
+      <h3 class="step-title">La IA recibe menos, entiende todo</h3>
+      <p class="step-desc">El texto optimizado se envía al modelo de tu elección. El informe llega en PDF listo para usar.</p>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        © 2026 Proyecto Apolo - Buenos Aires, Argentina.
-    </footer>
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-value">50<span>%</span></div>
+    <div class="metric-label">Reducción promedio de tokens por documento</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">8<span>+</span></div>
+    <div class="metric-label">Motores de IA compatibles de forma nativa</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">0<span>$</span></div>
+    <div class="metric-label">Inversión en infraestructura para el cliente</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">½<span style="font-size:32px"> factura</span></div>
+    <div class="metric-label">Procesás lo mismo y pagás la mitad. Ahorro real de tiempo y dinero desde el primer uso.</div>
+  </div>
+</div>
 
-</body>
-</html>
+<div class="compat" id="compatibilidad">
+  <p class="section-label">Compatibilidad</p>
+  <h2 class="section-title" style="margin-bottom:40px">Funciona con tu stack <em>actual</em>.</h2>
+  <div class="compat-grid">
+    <div class="compat-item"><div class="compat-name">OpenAI GPT-4o</div></div>
+    <div class="compat-item"><div class="compat-name">Claude (Anthropic)</div></div>
+    <div class="compat-item"><div class="compat-name">Google Gemini</div></div>
+    <div class="compat-item"><div class="compat-name">DeepSeek</div></div>
+    <div class="compat-item"><div class="compat-name">Mistral AI</div></div>
+    <div class="compat-item"><div class="compat-name">Perplexity</div></div>
+    <div class="compat-item"><div class="compat-name">Llama 3</div></div>
+    <div class="compat-item"><div class="compat-name">Copilot (Azure)</div></div>
+  </div>
+</div>
+
+
+
+<section class="cta-section" id="contacto">
+  <div class="cta-bg"></div>
+  <h2 class="cta-title">¿Cuánto estás<br>gastando <em>de más</em>?</h2>
+  <p class="cta-sub">Escribinos y calculamos juntos el ahorro potencial de tu organización.</p>
+  <div class="contact-row">
+    <a href="https://wa.me/5491148880823" class="contact-link" target="_blank">WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Proyecto <span>Apolo</span>® — Buenos Aires, Argentina</div>
+  <div class="footer-reg">Marca Registrada · Buenos Aires, Argentina · © 2026</div>
+</footer>
+
+<div class="lang-switch">
+  <button class="lang-btn active" onclick="setLang('es')">ES</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 4 + 'px';
+  cursor.style.top = my - 4 + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx - 18) * 0.12;
+  ry += (my - ry - 18) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width = '60px';
+    ring.style.height = '60px';
+    ring.style.opacity = '0.5';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.opacity = '1';
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const translations = {
+  es: {
+    eyebrow: 'Marca Registrada INPI · Clase 9 · Buenos Aires, Argentina',
+    heroTitle: 'Tu IA,<br><em>la mitad</em><br>del costo.',
+    heroDesc: 'Optimizamos el texto antes de enviarlo a cualquier modelo de inteligencia artificial. Mismo resultado. Menos tokens. Menos gasto.',
+    ctaBtn: 'Conocé más',
+    ctaFinal: '¿Cuánto estás<br>gastando <em>de más</em>?',
+    ctaSub: 'Escribinos y calculamos juntos el ahorro potencial de tu organización.',
+    email: 'Escribir por email',
+    wa: 'WhatsApp',
+    navDemo: 'Solicitar demo'
+  },
+  en: {
+    eyebrow: 'Registered Trademark · Buenos Aires, Argentina',
+    heroTitle: 'Your AI,<br><em>half</em><br>the cost.',
+    heroDesc: 'We optimize text before sending it to any AI model. Same results. Fewer tokens. Less spend.',
+    ctaBtn: 'Learn more',
+    ctaFinal: 'How much are you<br><em>overspending</em>?',
+    ctaSub: 'Write to us and we\'ll calculate your organization\'s potential savings together.',
+    email: 'Send an email',
+    wa: 'WhatsApp',
+    navDemo: 'Request demo'
+  }
+};
+
+function setLang(lang) {
+  const t = translations[lang];
+  document.querySelector('.hero-eyebrow').textContent = t.eyebrow;
+  document.querySelector('.hero-title').innerHTML = t.heroTitle;
+  document.querySelector('.hero-desc').textContent = t.heroDesc;
+  document.querySelector('.btn-primary').textContent = t.ctaBtn;
+  document.querySelector('.cta-title').innerHTML = t.ctaFinal;
+  document.querySelector('.cta-sub').textContent = t.ctaSub;
+  document.querySelector('.nav-cta').textContent = t.navDemo;
+  const contactLinks = document.querySelectorAll('.contact-link');
+  contactLinks[0].textContent = t.email;
+  contactLinks[1].textContent = t.wa;
+  document.querySelectorAll('.lang-btn').forEa
