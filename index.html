@@ -417,30 +417,7 @@ footer {
 }
 
 /* IDIOMA */
-.lang-switch {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 200;
-  display: flex;
-  gap: 8px;
-}
-.lang-btn {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  padding: 8px 14px;
-  border: 1px solid var(--border);
-  background: rgba(10,10,10,0.9);
-  color: var(--gray-text);
-  cursor: none;
-  transition: all 0.2s;
-  text-transform: uppercase;
-}
-.lang-btn.active, .lang-btn:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-}
+
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -572,51 +549,9 @@ footer {
   <div class="footer-reg">Marca Registrada · Buenos Aires, Argentina · © 2026</div>
 </footer>
 
-<div class="lang-switch">
-  <button class="lang-btn active" onclick="setLang('es')">ES</button>
-  <button class="lang-btn" onclick="setLang('en')">EN</button>
-</div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+<script>
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 });
-
-const translations = {
-  es: {
-    eyebrow: 'Marca Registrada INPI · Clase 9 · Buenos Aires, Argentina',
-    heroTitle: 'Tu IA,<br><em>la mitad</em><br>del costo.',
-    heroDesc: 'Optimizamos el texto antes de enviarlo a cualquier modelo de inteligencia artificial. Mismo resultado. Menos tokens. Menos gasto.',
-    ctaBtn: 'Conocé más',
-    ctaFinal: '¿Cuánto estás<br>gastando <em>de más</em>?',
-    ctaSub: 'Escribinos y calculamos juntos el ahorro potencial de tu organización.',
-    email: 'Escribir por email',
-    wa: 'WhatsApp',
-    navDemo: 'Solicitar demo'
-  },
-  en: {
-    eyebrow: 'Registered Trademark · Buenos Aires, Argentina',
-    heroTitle: 'Your AI,<br><em>half</em><br>the cost.',
-    heroDesc: 'We optimize text before sending it to any AI model. Same results. Fewer tokens. Less spend.',
-    ctaBtn: 'Learn more',
-    ctaFinal: 'How much are you<br><em>overspending</em>?',
-    ctaSub: 'Write to us and we\'ll calculate your organization\'s potential savings together.',
-    email: 'Send an email',
-    wa: 'WhatsApp',
-    navDemo: 'Request demo'
-  }
-};
-
-function setLang(lang) {
-  const t = translations[lang];
-  document.querySelector('.hero-eyebrow').textContent = t.eyebrow;
-  document.querySelector('.hero-title').innerHTML = t.heroTitle;
-  document.querySelector('.hero-desc').textContent = t.heroDesc;
-  document.querySelector('.btn-primary').textContent = t.ctaBtn;
-  document.querySelector('.cta-title').innerHTML = t.ctaFinal;
-  document.querySelector('.cta-sub').textContent = t.ctaSub;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-}
-  contactLinks[1].textContent = t.wa;
-  document.querySelectorAll('.lang-btn').forEa
