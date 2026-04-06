@@ -28,29 +28,9 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   overflow-x: hidden;
-  cursor: none;
 }
 
-/* CURSOR PERSONALIZADO */
-.cursor {
-  position: fixed;
-  width: 8px; height: 8px;
-  background: var(--cyan);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.1s ease;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  position: fixed;
-  width: 36px; height: 36px;
-  border: 1px solid rgba(0,229,200,0.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
-}
+
 
 /* NAVEGACIÓN */
 nav {
@@ -114,6 +94,8 @@ nav.scrolled {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 140px 60px 80px;
   position: relative;
   overflow: hidden;
@@ -160,10 +142,12 @@ nav.scrolled {
   margin-bottom: 60px;
   opacity: 0;
   animation: fadeUp 0.8s 0.6s forwards;
+  text-align: center;
 }
 .hero-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 40px;
   opacity: 0;
   animation: fadeUp 0.8s 0.8s forwards;
@@ -484,9 +468,6 @@ footer {
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
 <nav id="nav">
   <a href="#" class="nav-logo">Proyecto <span>Apolo</span>®</a>
   <ul class="nav-links">
@@ -597,38 +578,6 @@ footer {
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx - 4 + 'px';
-  cursor.style.top = my - 4 + 'px';
-});
-
-function animRing() {
-  rx += (mx - rx - 18) * 0.12;
-  ry += (my - ry - 18) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animRing);
-}
-animRing();
-
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    ring.style.width = '60px';
-    ring.style.height = '60px';
-    ring.style.opacity = '0.5';
-  });
-  el.addEventListener('mouseleave', () => {
-    ring.style.width = '36px';
-    ring.style.height = '36px';
-    ring.style.opacity = '1';
-  });
-});
-
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 });
