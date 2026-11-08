@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAP Proyecto Apolo — App para practicar el examen CAP</title>
+<link rel="icon" type="image/x-icon" href="icono.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ed;
+  --cyan: #00e5c8;
+  --cyan-dim: rgba(0,229,200,0.12);
+  --gray: #1a1a1a;
+  --gray-text: #888;
+  --border: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 60px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+}
+nav.scrolled { border-color: var(--border); background: rgba(10,10,10,0.92); backdrop-filter: blur(16px); }
+.nav-logo { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--cyan); }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); text-decoration: none; transition: color 0.2s; text-transform: uppercase; }
+.nav-links a:hover { color: var(--white); }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 140px 60px 80px; position: relative; overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,229,200,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,200,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-logo { width: 150px; height: 150px; border-radius: 50%; margin-bottom: 34px; position: relative; box-shadow: 0 0 40px rgba(0,229,200,0.22); }
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 28px; position: relative; }
+.hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(46px, 6.5vw, 88px); line-height: 1.02; letter-spacing: -2px; max-width: 950px; margin-bottom: 36px; position: relative; }
+.hero-title em { font-style: italic; color: var(--cyan); }
+.hero-desc { font-size: 18px; color: var(--gray-text); max-width: 560px; line-height: 1.7; margin-bottom: 52px; position: relative; }
+.hero-actions { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; position: relative; }
+
+.btn-primary {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  background: var(--cyan); color: var(--black); padding: 16px 40px; text-decoration: none; font-weight: 500;
+  display: inline-block; transition: opacity 0.2s, box-shadow 0.3s;
+}
+.btn-primary:hover { opacity: 0.9; box-shadow: 0 0 28px rgba(0,229,200,0.45); }
+
+.hero-stat { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray-text); letter-spacing: 1px; text-align: left; }
+.hero-stat strong { display: block; font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--white); letter-spacing: -1px; margin-bottom: 4px; font-weight: 400; }
+.hero-stat strong span { color: var(--cyan); }
+
+.ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; overflow: hidden; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: ticker 30s linear infinite; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); }
+.ticker-inner span { color: var(--cyan); margin: 0 20px; }
+
+.section { padding: 120px 60px; }
+.section-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 4vw, 56px); letter-spacing: -1px; line-height: 1.1; max-width: 640px; margin-bottom: 70px; }
+.section-title em { font-style: italic; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.step { background: var(--black); padding: 44px 38px; transition: background 0.3s, box-shadow 0.3s; }
+.step:hover { background: var(--gray); box-shadow: inset 0 0 0 1px rgba(0,229,200,0.35); }
+.step-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 22px; display: block; }
+.step-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 14px; letter-spacing: -0.5px; }
+.step-desc { font-size: 14px; color: var(--gray-text); line-height: 1.7; }
+
+.metrics { margin: 0 60px 120px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.metric { background: var(--black); padding: 48px 40px; transition: background 0.3s, box-shadow 0.3s; }
+.metric:hover { background: var(--gray); box-shadow: inset 0 0 0 1px rgba(0,229,200,0.35); }
+.metric-value { font-family: 'DM Serif Display', serif; font-size: 56px; letter-spacing: -3px; color: var(--white); margin-bottom: 8px; line-height: 1; }
+.metric-value span { color: var(--cyan); }
+.metric-label { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
+
+.cta-section { padding: 120px 60px; text-align: center; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
+.cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,229,200,0.06) 0%, transparent 70%); }
+.cta-title { font-family: 'DM Serif Display', serif; font-size: clamp(40px, 5vw, 72px); letter-spacing: -2px; max-width: 760px; margin: 0 auto 24px; line-height: 1.05; position: relative; }
+.cta-title em { font-style: italic; color: var(--cyan); }
+.cta-sub { font-size: 16px; color: var(--gray-text); margin-bottom: 40px; position: relative; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.contact-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; position: relative; }
+.contact-link {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--white); text-decoration: none; border: 1px solid var(--border);
+  padding: 14px 32px; display: inline-block;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.contact-link:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+.proximamente {
+  display: inline-block; position: relative;
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cyan); border: 1px solid rgba(0,229,200,0.5); padding: 14px 32px;
+  box-shadow: 0 0 18px rgba(0,229,200,0.15);
+}
+.aviso { position: relative; font-size: 12px; color: var(--gray-text); max-width: 620px; margin: 50px auto 0; line-height: 1.7; }
+.aviso a { color: var(--cyan); }
+
+footer { padding: 40px 60px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.footer-logo { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); }
+.footer-logo a { color: inherit; text-decoration: none; }
+.footer-logo span { color: var(--cyan); }
+.footer-reg { font-size: 11px; color: var(--gray-text); letter-spacing: 1px; }
+.footer-reg a { color: var(--gray-text); }
+
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
+
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 120px 24px 60px; }
+  .section { padding: 80px 24px; }
+  .steps { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: repeat(2, 1fr); margin: 0 24px 80px; }
+  .cta-section { padding: 80px 24px; }
+  footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Proyecto <span>Apolo</span>®</a>
+  <ul class="nav-links">
+    <li><a href="index.html#proyectos">← Proyectos</a></li>
+    <li><a href="#que-incluye">Qué incluye</a></li>
+    <li><a href="#descarga">Descarga</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <img class="hero-logo" src="img/cap-volante.png" alt="Logo de CAP Proyecto Apolo">
+  <p class="hero-eyebrow">CAP Proyecto Apolo · App Android</p>
+  <h1 class="hero-title">El examen CAP,<br><em>practicado</em> de verdad.</h1>
+  <p class="hero-desc">Una app para preparar el examen del CAP en España con preguntas de exámenes reales, para Mercancías y Viajeros, y explicaciones fáciles de entender.</p>
+  <div class="hero-actions">
+    <a href="#descarga" class="btn-primary">Quiero la app</a>
+    <div class="hero-stat">
+      <strong>12.000<span>+</span></strong>
+      preguntas de exámenes reales
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    Exámenes reales <span>·</span> Mercancías <span>·</span> Viajeros <span>·</span> Explicaciones simples <span>·</span> Funciona sin internet <span>·</span> Sin registro <span>·</span> Gratis <span>·</span>
+    Exámenes reales <span>·</span> Mercancías <span>·</span> Viajeros <span>·</span> Explicaciones simples <span>·</span> Funciona sin internet <span>·</span> Sin registro <span>·</span> Gratis <span>·</span>
+    Exámenes reales <span>·</span> Mercancías <span>·</span> Viajeros <span>·</span> Explicaciones simples <span>·</span> Funciona sin internet <span>·</span> Sin registro <span>·</span> Gratis <span>·</span>
+  </div>
+</div>
+
+<section class="section" id="que-incluye">
+  <p class="section-label">Qué incluye</p>
+  <h2 class="section-title">Todo lo que necesitás para <em>llegar listo.</em></h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01 — Exámenes</span>
+      <h3 class="step-title">Como el día del examen</h3>
+      <p class="step-desc">Exámenes reales ordenados por comunidad, sede, año y fecha. Modalidad completa de 100 preguntas y de promoción de 25, con el mismo tiempo y la misma puntuación: acierto +1, fallo −0,5.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02 — Explicaciones</span>
+      <h3 class="step-title">Aprendé de cada fallo</h3>
+      <p class="step-desc">Cada pregunta tiene una explicación en lenguaje simple: la trampa de la pregunta, un ejemplo práctico y una frase para recordar. Y avisos cuando la normativa cambió.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03 — Práctica</span>
+      <h3 class="step-title">A tu medida</h3>
+      <p class="step-desc">Un examen recomendado según tus temas más flojos, tests por tema de 25, 50 o 100 preguntas y repaso de las que fallaste hasta dominarlas.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04 — Diccionario</span>
+      <h3 class="step-title">Siglas y documentos</h3>
+      <p class="step-desc">CMR, ADR, tacógrafo, carta de porte y muchos más, explicados de forma simple. Tocá una sigla dentro de cualquier explicación y ves su significado.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05 — Progreso</span>
+      <h3 class="step-title">Mirá cómo avanzás</h3>
+      <p class="step-desc">Exámenes hechos, aprobados y no aprobados, un gráfico con tus últimos resultados y tus temas fuertes y flojos.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">06 — Sin vueltas</span>
+      <h3 class="step-title">Simple y privada</h3>
+      <p class="step-desc">Funciona sin internet, no pide registrarse y tus datos quedan guardados solo en tu teléfono.</p>
+    </div>
+  </div>
+</section>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-value">12K<span>+</span></div>
+    <div class="metric-label">Preguntas de exámenes reales</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">743</div>
+    <div class="metric-label">Exámenes para practicar</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">166</div>
+    <div class="metric-label">Siglas y documentos explicados</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">0<span>€</span></div>
+    <div class="metric-label">Gratis, sin registro y sin internet</div>
+  </div>
+</div>
+
+<section class="cta-section" id="descarga">
+  <div class="cta-bg"></div>
+  <h2 class="cta-title">Muy pronto<br>en <em>Google Play.</em></h2>
+  <p class="cta-sub">Estamos terminando de publicarla. Si querés probarla antes o tenés alguna consulta, escribinos.</p>
+  <div class="contact-row">
+    <span class="proximamente">Próximamente · Android</span>
+    <a href="mailto:contacto@proyectoapolo.com.ar" class="contact-link">Email</a>
+    <a href="https://wa.me/5491148880823" class="contact-link" target="_blank">WhatsApp</a>
+  </div>
+  <p class="aviso">Esta app no es oficial ni está vinculada a la DGT ni a ningún organismo público. Las preguntas provienen de exámenes publicados y sirven para practicar. <a href="privacidad-cap.html">Política de privacidad</a>.</p>
+</section>
+
+<footer>
+  <div class="footer-logo"><a href="index.html">Proyecto <span>Apolo</span>®</a> — CAP Proyecto Apolo</div>
+  <div class="footer-reg"><a href="privacidad-cap.html">Privacidad</a> · Marca Registrada · © 2026</div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+</script>
+</body>
+</html>

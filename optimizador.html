@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimizador de Tokens — Proyecto Apolo®</title>
+<link rel="icon" type="image/x-icon" href="icono.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ed;
+  --cyan: #00e5c8;
+  --cyan-dim: rgba(0,229,200,0.12);
+  --gray: #1a1a1a;
+  --gray-text: #888;
+  --border: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 60px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+}
+nav.scrolled { border-color: var(--border); background: rgba(10,10,10,0.92); backdrop-filter: blur(16px); }
+.nav-logo { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--cyan); }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a { font-size: 13px; letter-spacing: 1px; color: var(--gray-text); text-decoration: none; transition: color 0.2s; text-transform: uppercase; }
+.nav-links a:hover { color: var(--white); }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 140px 60px 80px; position: relative; overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,229,200,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,200,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 32px; }
+.hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 7vw, 96px); line-height: 1.0; letter-spacing: -2px; max-width: 900px; margin-bottom: 40px; }
+.hero-title em { font-style: italic; color: var(--cyan); }
+.hero-desc { font-size: 18px; font-weight: 300; color: var(--gray-text); max-width: 500px; line-height: 1.7; margin-bottom: 60px; text-align: center; }
+.hero-actions { display: flex; align-items: center; justify-content: center; gap: 40px; }
+
+.btn-primary {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  background: var(--cyan); color: var(--black); padding: 16px 40px; text-decoration: none; font-weight: 500;
+  display: inline-block; transition: opacity 0.2s, transform 0.3s;
+}
+.btn-primary:hover { opacity: 0.9; box-shadow: 0 0 28px rgba(0,229,200,0.45); }
+
+.hero-stat { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray-text); letter-spacing: 1px; }
+.hero-stat strong { display: block; font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--white); letter-spacing: -1px; margin-bottom: 4px; font-weight: 400; }
+
+.ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; overflow: hidden; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: ticker 25s linear infinite; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); }
+.ticker-inner span { color: var(--cyan); margin: 0 20px; }
+
+.section { padding: 120px 60px; }
+.section-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 4vw, 56px); letter-spacing: -1px; line-height: 1.1; max-width: 600px; margin-bottom: 80px; }
+.section-title em { font-style: italic; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.step { background: var(--black); padding: 48px 40px; transition: background 0.3s, transform 0.3s; }
+.step:hover { background: var(--gray); box-shadow: inset 0 0 0 1px rgba(0,229,200,0.35); }
+.step-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 24px; display: block; }
+.step-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 16px; letter-spacing: -0.5px; }
+.step-desc { font-size: 14px; color: var(--gray-text); line-height: 1.7; }
+
+.metrics { padding: 0 60px 120px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.metric { background: var(--black); padding: 48px 40px; transition: background 0.3s, transform 0.3s; }
+.metric:hover { background: var(--gray); box-shadow: inset 0 0 0 1px rgba(0,229,200,0.35); }
+.metric-value { font-family: 'DM Serif Display', serif; font-size: 56px; letter-spacing: -3px; color: var(--white); margin-bottom: 8px; line-height: 1; }
+.metric-value span { color: var(--cyan); }
+.metric-label { font-size: 13px; color: var(--gray-text); line-height: 1.5; }
+
+.compat { padding: 0 60px 120px; }
+.compat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.compat-item { background: var(--black); padding: 32px 28px; transition: background 0.3s, transform 0.3s; }
+.compat-item:hover { background: var(--gray); box-shadow: inset 0 0 0 1px rgba(0,229,200,0.35); }
+.compat-name { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 1px; }
+
+.cta-section { padding: 120px 60px; text-align: center; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
+.cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,229,200,0.06) 0%, transparent 70%); }
+.cta-title { font-family: 'DM Serif Display', serif; font-size: clamp(40px, 5vw, 72px); letter-spacing: -2px; max-width: 700px; margin: 0 auto 24px; line-height: 1.05; position: relative; }
+.cta-title em { font-style: italic; color: var(--cyan); }
+.cta-sub { font-size: 16px; color: var(--gray-text); margin-bottom: 48px; position: relative; }
+.contact-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; position: relative; }
+
+.contact-link {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--white); text-decoration: none; border: 1px solid var(--border);
+  padding: 14px 32px; display: inline-block;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.3s;
+}
+.contact-link:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+footer { padding: 40px 60px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-text); }
+.footer-logo span { color: var(--cyan); }
+.footer-reg { font-size: 11px; color: var(--gray-text); letter-spacing: 1px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 120px 24px 60px; }
+  .section { padding: 80px 24px; }
+  .metrics, .compat-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr; }
+  .metrics { padding: 0 24px 80px; }
+  .compat { padding: 0 24px 80px; }
+  .cta-section { padding: 80px 24px; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Proyecto <span>Apolo</span>®</a>
+  <ul class="nav-links">
+    <li><a href="index.html#proyectos">← Proyectos</a></li>
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#compatibilidad">Compatibilidad</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <p class="hero-eyebrow">Optimizador de Tokens · Software PC</p>
+  <h1 class="hero-title">Tu IA,<br><em>la mitad</em><br>del costo.</h1>
+  <p class="hero-desc">Te ayudamos a optimizar el texto antes de enviarlo a cualquier modelo de inteligencia artificial. Obteniendo el mismo resultado, ahorrando tiempo y dinero.</p>
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">Conocé más</a>
+    <div class="hero-stat">
+      <strong>50<span style="color:var(--cyan);font-size:24px">%</span></strong>
+      reducción promedio de tokens
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+    GPT-4o <span>·</span> Claude <span>·</span> Gemini <span>·</span> DeepSeek <span>·</span> Mistral <span>·</span> Perplexity <span>·</span> Llama <span>·</span> Copilot <span>·</span>
+  </div>
+</div>
+
+<section class="section" id="como-funciona">
+  <p class="section-label">Motor V15</p>
+  <h2 class="section-title">Inteligencia aplicada <em>antes</em> de la IA.</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01 — Ingesta</span>
+      <h3 class="step-title">Cargá tu documento</h3>
+      <p class="step-desc">"Implementación instantánea: arrastrá y soltá tus documentos directamente sin procesos de configuración. Proyecto Apolo garantiza una compatibilidad total, permitiéndote optimizar PDFs de todo tipo, imágenes (JPG, PNG), escaneos y fotos de dispositivos móviles, además de documentos de texto convencionales (Word, Excel, .txt) en segundos".</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02 — Optimización</span>
+      <h3 class="step-title">El Motor V15 actúa</h3>
+      <p class="step-desc">"Optimización de precisión: mediante algoritmos avanzados de limpieza lingüística desarrollamos el Motor V15, diseñado para eliminar el ruido semántico y el contenido irrelevante. Nuestra tecnología filtra lo superficial, garantizando que el texto final conserve el 100% del valor informativo de tus documentos".</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03 — Resultado</span>
+      <h3 class="step-title">La IA recibe menos, entiende todo</h3>
+      <p class="step-desc">"Integración nativa y profesional: el contenido optimizado se procesa a través del modelo de IA que tu organización utiliza habitualmente. En segundos, obtenés exactamente el mismo resultado de siempre, consolidado en un PDF profesional con la identidad visual y el logo de tu empresa, listo para su distribución institucional".</p>
+    </div>
+  </div>
+</section>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-value">50<span>%</span></div>
+    <div class="metric-label">Reducción promedio de tokens por documento</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">8<span>+</span></div>
+    <div class="metric-label">Motores de IA compatibles de forma nativa</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value">$<span>   0</span></div>
+    <div class="metric-label">Inversión en infraestructura para el cliente</div>
+  </div>
+  <div class="metric">
+    <div class="metric-value"><span style="font-size:32px"> Tiempo y Dinero</span></div>
+    <div class="metric-label"> Ahorro de tiempo y dinero desde el primer uso.Procesás lo mismo y pagás la mitad. </div>
+  </div>
+</div>
+
+<div class="compat" id="compatibilidad">
+  <p class="section-label">Compatibilidad</p>
+  <h2 class="section-title" style="margin-bottom:40px">Funciona con tu stack <em>actual</em>.</h2>
+  <div class="compat-grid">
+    <div class="compat-item"><div class="compat-name">OpenAI GPT-4o</div></div>
+    <div class="compat-item"><div class="compat-name">Claude (Anthropic)</div></div>
+    <div class="compat-item"><div class="compat-name">Google Gemini</div></div>
+    <div class="compat-item"><div class="compat-name">DeepSeek</div></div>
+    <div class="compat-item"><div class="compat-name">Mistral AI</div></div>
+    <div class="compat-item"><div class="compat-name">Perplexity</div></div>
+    <div class="compat-item"><div class="compat-name">Llama 3</div></div>
+    <div class="compat-item"><div class="compat-name">Copilot (Azure)</div></div>
+  </div>
+</div>
+
+<section class="cta-section" id="contacto">
+  <div class="cta-bg"></div>
+  <h2 class="cta-title">¿Cuánto estás<br>gastando <em>de más</em>?</h2>
+  <p class="cta-sub">"Ponete en contacto con nosotros para empezar a reducir tus costos operativos en tokens desde ahora".</p>
+  <div class="contact-row">
+    <a href="mailto:contacto@proyectoapolo.com.ar" class="contact-link">Email</a>
+    <a href="https://wa.me/5491148880823" class="contact-link" target="_blank">WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><a href="index.html" style="color:inherit;text-decoration:none">Proyecto <span>Apolo</span>®</a> — Optimizador de Tokens</div>
+  <div class="footer-reg">Marca Registrada · Buenos Aires, Argentina · © 2026</div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+</script>
+</body>
+</html>
