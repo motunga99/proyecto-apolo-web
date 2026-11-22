@@ -64,6 +64,15 @@ nav.scrolled { border-color: var(--border); background: rgba(10,10,10,0.92); bac
 .hero-stat { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray-text); letter-spacing: 1px; text-align: left; }
 .hero-stat strong { display: block; font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--white); letter-spacing: -1px; margin-bottom: 4px; font-weight: 400; }
 .hero-stat strong span { color: var(--cyan); }
+.contador { position: relative; display: flex; align-items: center; gap: 16px; padding: 14px 26px 14px 20px; border: 1px solid rgba(0,229,200,0.45); background: linear-gradient(135deg, rgba(0,229,200,0.10), rgba(0,229,200,0.02)); overflow: hidden; text-align: left; animation: contadorBrillo 4s ease-in-out infinite; }
+.contador::after { content: ''; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.14), transparent); animation: contadorDestello 5s ease-in-out infinite; pointer-events: none; }
+.contador-luz { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); animation: contadorLuz 2s ease-in-out infinite; flex: none; }
+.contador-txt strong { display: block; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 30px; color: var(--white); letter-spacing: -0.5px; line-height: 1.05; }
+.contador-txt strong .visitas-num { color: var(--cyan); }
+.contador-txt em { display: block; font-style: normal; font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-text); margin-top: 4px; }
+@keyframes contadorBrillo { 0%, 100% { box-shadow: 0 0 0 rgba(0,229,200,0); } 50% { box-shadow: 0 0 28px rgba(0,229,200,0.25); } }
+@keyframes contadorDestello { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+@keyframes contadorLuz { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
 /* ===== Cinta ===== */
 .ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; overflow: hidden; white-space: nowrap; }
@@ -195,13 +204,12 @@ footer { padding: 40px 60px; border-top: 1px solid var(--border); display: flex;
   <p class="hero-desc">En Proyecto Apolo diseñamos y desarrollamos aplicaciones, software e integraciones con inteligencia artificial para resolver problemas reales, de forma simple.</p>
   <div class="hero-actions">
     <a href="#proyectos" class="btn-primary">Ver proyectos</a>
-    <div class="hero-stat">
-      <strong>2<span>+</span>2</strong>
-      proyectos listos y en desarrollo
-    </div>
-    <div class="hero-stat visitas" style="display:none">
-      <strong class="visitas-num">0</strong>
-      visitas a la web
+    <div class="contador visitas" style="display:none">
+      <span class="contador-luz"></span>
+      <div class="contador-txt">
+        <strong><span class="visitas-num">0</span> visitas</strong>
+        <em>personas aprendiendo con Proyecto Apolo</em>
+      </div>
     </div>
   </div>
 </section>
