@@ -176,7 +176,7 @@
 <script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
   // Contador público de visitas (GoatCounter). Si no responde, no se muestra nada.
-  fetch('https://proyectoapolo.goatcounter.com/counter/TOTAL.json?start=2026-11-01')
+  fetch('https://proyectoapolo.goatcounter.com/counter/TOTAL.json?start=2026-11-01&end=' + new Date(Date.now() + 864e5).toISOString().slice(0, 10))
     .then(r => r.ok ? r.json() : null)
     .then(d => { if (!d) return; document.querySelectorAll('.visitas-num').forEach(e => e.textContent = d.count); document.querySelectorAll('.visitas').forEach(e => e.style.display = ''); })
     .catch(() => {});
