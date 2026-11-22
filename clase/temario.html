@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase Magistral del CAP · Temario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/apolo.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; font-family: 'Inter', sans-serif; color: #F1F5F9;
+      background: radial-gradient(circle at 20% 0%, #0A1424, #05080E 55%, #030509);
+    }
+    .envoltura { width: min(920px, 100%); margin: 0 auto; padding: 36px 18px 60px; }
+    .marca { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.32em; color: #22D3EE; }
+    h1 { margin: 6px 0 4px; font-size: 34px; font-weight: 800; color: #fff; }
+    .sub { margin: 0 0 26px; color: #94A3B8; font-size: 16px; }
+    .seccion { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.24em; color: #34F5A0; margin: 26px 0 12px; }
+    .temas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .tema {
+      display: block; text-decoration: none; color: inherit; padding: 18px; border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1); transition: box-shadow 0.4s ease, border-color 0.3s ease;
+    }
+    a.tema:hover { border-color: #22D3EE; box-shadow: 0 0 0 2px rgba(34,211,238,0.35), 0 0 26px rgba(34,211,238,0.4); }
+    .tema .num { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 13px; color: #03141C; background: linear-gradient(90deg,#22D3EE,#34F5A0); border-radius: 10px; padding: 4px 9px; display: inline-block; }
+    .tema h2 { margin: 12px 0 6px; font-size: 20px; font-weight: 800; color: #fff; }
+    .tema p { margin: 0; color: #CBD5E1; font-size: 14.5px; line-height: 1.45; }
+    .tema ul { margin: 10px 0 0; padding-left: 18px; color: #CBD5E1; font-size: 14px; line-height: 1.6; }
+    .estado { display: inline-block; margin-top: 12px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; padding: 4px 10px; border-radius: 999px; }
+    .listo { background: rgba(52,245,160,0.14); color: #34F5A0; border: 1px solid rgba(52,245,160,0.4); }
+    .armando { background: rgba(251,191,36,0.12); color: #FDE68A; border: 1px solid rgba(251,191,36,0.35); }
+    .pronto { background: rgba(255,255,255,0.05); color: #94A3B8; border: 1px solid rgba(255,255,255,0.12); }
+    .tema.apagado { opacity: 0.55; }
+    .pie { margin-top: 34px; color: #64748B; font-size: 13px; text-align: center; }
+    .pie a { color: #22D3EE; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="envoltura">
+    <div class="marca">PROYECTO APOLO</div>
+    <h1>Clase Magistral del CAP · Temario</h1>
+    <p class="sub">Los temas más difíciles del examen, explicados fácil y con las preguntas oficiales. Tocá un tema para entrar.</p>
+    <p class="visitas" style="display:none;margin-top:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:0.05em;color:#67e8f9">👥 <span class="visitas-num">0</span> visitas a Proyecto Apolo</p>
+
+    <div class="seccion">CAP DE MERCANCÍAS</div>
+    <div class="temas">
+      <a class="tema" href="index.html">
+        <span class="num">1</span>
+        <h2>Círculo de Kamm</h2>
+        <p>Por qué el camión no dobla si frenás fuerte en la curva.</p>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="viraje.html">
+        <span class="num">2</span>
+        <h2>Subviraje y sobreviraje</h2>
+        <p>Cuando el camión se va de trompa o de cola, y los movimientos del vehículo.</p>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="sociedades.html">
+        <span class="num">3</span>
+        <h2>Sociedades</h2>
+        <ul>
+          <li>Autónomo</li>
+          <li>Sociedad anónima (SA)</li>
+          <li>Sociedad limitada (SL)</li>
+          <li>Sociedad laboral</li>
+          <li>Cooperativa</li>
+          <li>Otras sociedades</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="papeles.html">
+        <span class="num">4</span>
+        <h2>Papeles del transporte · en España</h2>
+        <ul>
+          <li>Público o privado</li>
+          <li>La autorización</li>
+          <li>El documento de control</li>
+          <li>El inspector te para</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="internacional.html">
+        <span class="num">5</span>
+        <h2>Papeles del transporte · internacional</h2>
+        <ul>
+          <li>Por Europa</li>
+          <li>La carta de porte CMR</li>
+          <li>Schengen</li>
+          <li>Fuera de la UE</li>
+          <li>Aduana, tránsito y TIR</li>
+          <li>Transporte combinado</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="cap.html">
+        <span class="num">6</span>
+        <h2>El CAP: tu título de conductor</h2>
+        <ul>
+          <li>Qué es y quién lo necesita</li>
+          <li>Cómo se saca</li>
+          <li>Tarjeta y formación continua</li>
+          <li>Las empresas CAP</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="tacografo.html">
+        <span class="num">7</span>
+        <h2>El tacógrafo y los tiempos</h2>
+        <ul>
+          <li>Cuánto podés manejar</li>
+          <li>Los descansos</li>
+          <li>Tiempo de trabajo</li>
+          <li>Quién lleva tacógrafo</li>
+          <li>El analógico y sus discos</li>
+          <li>El digital: el aparato</li>
+          <li>Las tarjetas</li>
+          <li>Usar el digital: pictogramas, tarjeta, modos</li>
+          <li>Controles y sanciones</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="seguridad.html">
+        <span class="num">8</span>
+        <h2>Sistemas de seguridad activa</h2>
+        <ul>
+          <li>Seguridad activa y pasiva</li>
+          <li>Los frenos y el fading</li>
+          <li>Los ralentizadores</li>
+          <li>El ABS</li>
+          <li>ASR y ESP</li>
+          <li>EBS y BAS</li>
+          <li>Ayudas a la conducción</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+      <a class="tema" href="mecanica.html">
+        <span class="num">9</span>
+        <h2>Mecánica, consumo y marchas</h2>
+        <ul>
+          <li>El motor</li>
+          <li>Combustible, aire y turbo</li>
+          <li>Potencia, par y zona verde</li>
+          <li>La transmisión</li>
+          <li>Gastar menos</li>
+          <li>Aceite, refrigeración y batería</li>
+          <li>Escape y contaminación</li>
+        </ul>
+        <span class="estado listo">Listo</span>
+      </a>
+    </div>
+
+    <div class="seccion">CAP DE VIAJEROS</div>
+    <div class="temas">
+      <div class="tema apagado">
+        <h2>Viajeros</h2>
+        <p>Los mismos temas pensados para el autobús.</p>
+        <span class="estado pronto">Próximamente</span>
+      </div>
+    </div>
+
+    <p class="pie">Hecho por Proyecto Apolo · <a href="https://www.proyectoapolo.com.ar">www.proyectoapolo.com.ar</a></p>
+  </div>
+<script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+  // Contador público de visitas (GoatCounter). Si no responde, no se muestra nada.
+  fetch('https://proyectoapolo.goatcounter.com/counter/TOTAL.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (!d) return; document.querySelectorAll('.visitas-num').forEach(e => e.textContent = d.count); document.querySelectorAll('.visitas').forEach(e => e.style.display = ''); })
+    .catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase Magistral del CAP · Círculo de Kamm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: #7dd3fc;
+    }
+    #lienzo {
+      position: fixed;
+      inset: 0;
+      cursor: grab;
+    }
+    #lienzo:active { cursor: grabbing; }
+
+    .tarjeta {
+      background: rgba(255, 255, 255, 0.93);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+      padding: 10px 14px;
+    }
+
+    /* ---------- BARRA SUPERIOR ---------- */
+    .barra {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .barra > * { pointer-events: auto; }
+    .titulo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #4f46e5;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .titulo h1 {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      color: #1e293b;
+    }
+    .titulo p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .boton {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 9px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.4s ease, color 0.3s ease;
+    }
+    /* Destello suave de luz al pasar el mouse (sin saltos) */
+    .boton:hover {
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.7);
+    }
+    .boton.activo {
+      background: #0ea5e9;
+      border-color: #0284c7;
+      color: white;
+    }
+    .boton.noche {
+      background: #312e81;
+      border-color: #1e1b4b;
+      color: #e0e7ff;
+    }
+    .separador {
+      width: 1px;
+      height: 26px;
+      background: #e2e8f0;
+      margin: 0 2px;
+    }
+
+    /* ---------- MENSAJE (explicación tonta) ---------- */
+    #mensaje {
+      position: fixed;
+      top: 92px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(560px, calc(100% - 32px));
+      text-align: center;
+      border: 2px solid #bae6fd;
+      transition: border-color 0.4s ease, background 0.4s ease;
+    }
+    #mensaje h2 {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 19px;
+      color: #0f172a;
+    }
+    #mensaje p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #334155;
+    }
+    #mensaje.alerta {
+      border-color: #fca5a5;
+      background: rgba(254, 242, 242, 0.95);
+    }
+    #mensaje.alerta h2 { color: #b91c1c; }
+    #mensaje.destello { animation: destello 0.9s ease; }
+    @keyframes destello {
+      0% { box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.0); }
+      30% { box-shadow: 0 0 0 6px rgba(125, 211, 252, 0.55), 0 0 30px rgba(125, 211, 252, 0.8); }
+      100% { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12); }
+    }
+
+    /* ---------- PANEL DEL CÍRCULO DE KAMM ---------- */
+    .panel-kamm {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 250px;
+    }
+    .panel-titulo {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      color: #1e293b;
+    }
+    .panel-kamm svg { width: 100%; height: auto; display: block; }
+    .leyenda {
+      display: grid;
+      gap: 3px;
+      font-size: 12px;
+      color: #334155;
+      margin-top: 4px;
+    }
+    .leyenda span {
+      display: inline-block;
+      width: 16px;
+      height: 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ---------- PANEL DE CABINA ---------- */
+    .panel-cabina {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 290px;
+      background: rgba(15, 23, 42, 0.92);
+      border-color: #1e293b;
+    }
+    .panel-cabina .panel-titulo { color: #e2e8f0; }
+    .panel-cabina svg { width: 100%; height: auto; display: block; }
+
+    /* ---------- CONTROLES ---------- */
+    .controles {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: 390px;
+      display: grid;
+      gap: 8px;
+    }
+    .controles label {
+      font-size: 14px;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+    .controles label b { color: #0f172a; }
+    .controles input[type="range"] {
+      width: 100%;
+      accent-color: #0ea5e9;
+      cursor: pointer;
+    }
+    .fila {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .fila .boton { padding: 7px 12px; font-size: 13px; }
+    #btn-repetir { margin-left: auto; background: #4f46e5; border-color: #3730a3; color: white; }
+
+    /* ---------- MODOS ---------- */
+    body.modo-clase .controles,
+    body.modo-clase #mensaje { display: none; }
+    body.modo-clase:not(.clase-camion) .panel-kamm,
+    body.modo-clase:not(.clase-camion) .panel-cabina { display: none; }
+    body.modo-libre #clase { display: none; }
+    .boton.principal { background: #4f46e5; border-color: #3730a3; color: white; }
+    .boton:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+
+    /* ---------- TARJETA DEL MODO CLASE ---------- */
+    #clase {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(640px, calc(100% - 32px));
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      padding: 14px 18px;
+      border: 2px solid #c7d2fe;
+    }
+    #clase.destello { animation: destello 0.9s ease; }
+    .clase-cabecera {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .progreso {
+      flex: 1;
+      height: 6px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+    #clase-progreso {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+      transition: width 0.5s ease;
+    }
+    #clase-titulo {
+      margin: 8px 0 6px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #0f172a;
+    }
+    #clase-texto p {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+    .t-frenar { color: #b45309; }
+    .t-doblar { color: #6d28d9; }
+    .t-suma { color: #047857; }
+    #clase-nota {
+      margin: 4px 0 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      font-size: 15px;
+      font-weight: 600;
+      color: #3730a3;
+    }
+    #clase-visual { width: 100%; height: auto; display: block; margin: 4px 0 6px; }
+    .clase-botones { margin-top: 6px; }
+    .clase-botones #clase-siguiente { margin-left: auto; }
+
+    /* Preguntas */
+    .quiz-meta { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+    .quiz-enunciado { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 10px; }
+    .quiz-opciones { display: grid; gap: 8px; }
+    .opcion {
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.4s ease;
+    }
+    .opcion:hover:not(:disabled) { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.6); }
+    .opcion:disabled { cursor: default; }
+    .opcion.correcta { border-color: #22c55e; background: #dcfce7; }
+    .opcion.incorrecta { border-color: #ef4444; background: #fee2e2; }
+    .quiz-explica { margin-top: 10px; font-size: 15px; color: #1e293b; }
+    .quiz-explica p { margin: 0 0 8px; line-height: 1.45; }
+    .quiz-bien { color: #15803d; font-weight: 800; }
+    .quiz-mal { color: #b91c1c; font-weight: 800; }
+    .quiz-ojo { background: #fef9c3; border-radius: 10px; padding: 8px 10px; }
+
+    /* ---------- VENTANAS QUE SE MUEVEN ---------- */
+    .agarre { cursor: move; touch-action: none; }
+    .panel-titulo.agarre::after { content: '  ⠿'; color: #94a3b8; }
+    .moviendose { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.5), 0 0 28px rgba(125, 211, 252, 0.75) !important; }
+    .btn-achicar {
+      flex: none;
+      width: 30px;
+      height: 26px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: box-shadow 0.4s ease;
+    }
+    .btn-achicar:hover { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 14px rgba(125, 211, 252, 0.7); }
+    #clase.achicada > *:not(.clase-cabecera) { display: none !important; }
+    /* Con el camión en la ruta, la tarjeta arranca arriba a la izquierda (después se mueve donde quieras) */
+    body.clase-camion #clase {
+      left: 16px;
+      top: 96px;
+      bottom: auto;
+      transform: none;
+      width: min(430px, calc(100% - 32px));
+      max-height: calc(100vh - 112px);
+    }
+
+    /* ---------- PANTALLAS CHICAS (celular) ---------- */
+    @media (max-width: 1100px) {
+      .controles {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        transform: none;
+      }
+      .panel-kamm, .panel-cabina { bottom: 210px; }
+      .panel-kamm { transform: scale(0.75); transform-origin: bottom left; }
+      .panel-cabina { transform: scale(0.75); transform-origin: bottom right; }
+    }
+    @media (max-width: 600px) {
+      .titulo p { display: none; }
+      #mensaje { top: 140px; }
+      #mensaje p { font-size: 13px; }
+      .panel-kamm { transform: scale(0.6); }
+      .panel-cabina { transform: scale(0.6); }
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- Estilo Proyecto Apolo (igual que la app) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/apolo.css">
+</head>
+<body class="modo-clase">
+  <div id="lienzo"></div>
+
+  <!-- Barra superior -->
+  <header class="barra">
+    <div class="tarjeta titulo">
+      <div class="logo">CAP</div>
+      <div>
+        <h1>Círculo de Kamm</h1>
+        <p>Arrastrá para girar · rueda del mouse o dos dedos para zoom</p>
+      </div>
+    </div>
+
+    <div class="tarjeta botones">
+      <button class="boton activo" data-modo="clase">Modo clase</button>
+      <button class="boton" data-modo="libre">Modo libre</button>
+      <div class="separador"></div>
+      <button class="boton activo" data-vista="perspectiva">Perspectiva</button>
+      <button class="boton" data-vista="costado">Costado</button>
+      <button class="boton" data-vista="arriba">Arriba</button>
+      <button class="boton" data-vista="ruedas">Ruedas</button>
+      <div class="separador"></div>
+      <button class="boton" id="boton-noche">Noche</button>
+    </div>
+  </header>
+
+  <!-- Explicación de lo que está pasando -->
+  <div id="mensaje" class="tarjeta">
+    <h2 id="msg-titulo">Recta</h2>
+    <p id="msg-texto">El camión va derecho.</p>
+  </div>
+
+  <!-- Círculo de Kamm -->
+  <div class="tarjeta panel-kamm">
+    <p class="panel-titulo">El agarre de la rueda</p>
+    <svg viewBox="0 0 220 220">
+      <defs>
+        <marker id="punta-verde" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#10b981"/></marker>
+        <marker id="punta-roja" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker>
+        <marker id="punta-ambar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f59e0b"/></marker>
+        <marker id="punta-violeta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8b5cf6"/></marker>
+      </defs>
+
+      <!-- Ejes -->
+      <line x1="110" y1="22" x2="110" y2="198" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="22" y1="110" x2="198" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="110" y="14" text-anchor="middle" font-size="11" fill="#64748b">Acelerar</text>
+      <text x="110" y="214" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Frenar</text>
+      <text x="6" y="104" font-size="11" font-weight="700" fill="#6d28d9">Doblar</text>
+
+      <!-- Círculo del suelo seco (referencia) -->
+      <circle id="kamm-referencia" cx="110" cy="110" r="78" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4" style="opacity:0"/>
+      <text id="kamm-texto-ref" x="168" y="44" font-size="10" fill="#64748b" style="opacity:0">seco</text>
+
+      <!-- Círculo = todo el agarre que tiene la rueda -->
+      <circle id="kamm-circulo" cx="110" cy="110" r="78" fill="rgba(14,165,233,0.12)" stroke="#0ea5e9" stroke-width="3"/>
+
+      <!-- Lo que queda para doblar -->
+      <line id="kamm-queda" x1="110" y1="110" x2="32" y2="110" stroke="#86efac" stroke-width="10" stroke-linecap="round" opacity="0.8"/>
+
+      <!-- Flechas -->
+      <line id="kamm-freno" x1="110" y1="110" x2="110" y2="110" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" marker-end="url(#punta-ambar)"/>
+      <line id="kamm-doblar" x1="110" y1="110" x2="110" y2="110" stroke="#8b5cf6" stroke-width="5" stroke-linecap="round" marker-end="url(#punta-violeta)"/>
+      <line id="kamm-suma" x1="110" y1="110" x2="110" y2="110" stroke="#10b981" stroke-width="4" stroke-linecap="round" marker-end="url(#punta-verde)"/>
+      <circle cx="110" cy="110" r="4" fill="#0f172a"/>
+    </svg>
+    <div class="leyenda">
+      <div><span style="background:#f59e0b"></span>Frenar = fuerza de frenado</div>
+      <div><span style="background:#8b5cf6"></span>Doblar = fuerza de guiado lateral</div>
+      <div><span style="background:#10b981"></span>Suma de las dos (resultante)</div>
+      <div><span style="background:#86efac"></span>Lo que queda para doblar</div>
+    </div>
+  </div>
+
+  <!-- Cabina: velocímetro, volante y pedales -->
+  <div class="tarjeta panel-cabina">
+    <p class="panel-titulo">Cabina</p>
+    <svg viewBox="0 0 260 150">
+      <!-- Velocímetro -->
+      <circle cx="60" cy="75" r="50" fill="#0b1220"/>
+      <path d="M21.9 97 A44 44 0 1 1 98.1 97" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+      <line id="cab-aguja" x1="60" y1="75" x2="60" y2="38" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="60" cy="75" r="5" fill="#f97316"/>
+      <text id="cab-kmh" x="60" y="108" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff">0</text>
+      <text x="60" y="121" text-anchor="middle" font-size="10" fill="#94a3b8">km/h</text>
+
+      <!-- Volante -->
+      <g id="cab-volante">
+        <circle cx="150" cy="75" r="34" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+        <line x1="116" y1="75" x2="184" y2="75" stroke="#e2e8f0" stroke-width="6"/>
+        <line x1="150" y1="75" x2="150" y2="109" stroke="#e2e8f0" stroke-width="6"/>
+        <circle cx="150" cy="75" r="10" fill="#475569"/>
+        <rect x="146" y="37" width="8" height="8" rx="2" fill="#f97316"/>
+      </g>
+      <text x="150" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Volante</text>
+
+      <!-- Pedales -->
+      <rect id="cab-freno" x="203" y="66" width="22" height="38" rx="5" fill="#64748b"/>
+      <rect id="cab-acelerador" x="232" y="56" width="18" height="48" rx="5" fill="#64748b"/>
+      <text x="214" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Freno</text>
+      <text x="241" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Acel.</text>
+    </svg>
+  </div>
+
+  <!-- Controles -->
+  <div class="tarjeta controles">
+    <label>Velocidad al llegar a la curva <b id="txt-vel">50 km/h</b></label>
+    <input type="range" id="ctl-vel" min="20" max="90" step="5" value="50">
+    <label>Frenar dentro de la curva <b id="txt-freno">0%</b></label>
+    <input type="range" id="ctl-freno" min="0" max="100" step="5" value="0">
+    <div class="fila">
+      <button class="boton activo" data-suelo="seco">Seco</button>
+      <button class="boton" data-suelo="mojado">Mojado</button>
+      <button class="boton" data-suelo="hielo">Hielo</button>
+      <button class="boton" id="btn-repetir">Repetir</button>
+    </div>
+    <div class="fila">
+      <button class="boton" id="btn-pausa">Pausa</button>
+      <button class="boton" id="btn-ritmo">Cámara lenta</button>
+    </div>
+  </div>
+
+  <!-- Modo clase: paso a paso -->
+  <div id="clase" class="tarjeta">
+    <div class="clase-cabecera">
+      <span id="clase-paso">Paso 1</span>
+      <div class="progreso"><div id="clase-progreso"></div></div>
+      <button class="btn-achicar" id="clase-achicar" title="Achicar">–</button>
+    </div>
+    <h2 id="clase-titulo"></h2>
+    <div id="clase-texto"></div>
+    <p id="clase-nota" hidden></p>
+
+    <svg id="clase-visual" viewBox="0 0 520 270">
+      <defs>
+        <marker id="vpunta-verde" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#10b981"/></marker>
+        <marker id="vpunta-roja" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker>
+        <marker id="vpunta-ambar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f59e0b"/></marker>
+        <marker id="vpunta-violeta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8b5cf6"/></marker>
+      </defs>
+
+      <!-- Barra del 100% -->
+      <g id="vis-barra">
+        <text x="130" y="30" text-anchor="middle" font-size="15" font-weight="800" fill="#0f172a">Agarre de la rueda: 100%</text>
+        <text x="20" y="62" font-size="11" fill="#64748b">0%</text>
+        <text x="240" y="62" text-anchor="end" font-size="11" fill="#64748b">100%</text>
+        <rect x="20" y="70" width="220" height="46" rx="10" fill="#bbf7d0" stroke="#86efac" stroke-width="2"/>
+        <rect id="vb-frenar" x="20" y="70" width="0" height="46" rx="10" fill="#f59e0b"/>
+        <rect id="vb-doblar" x="20" y="70" width="0" height="46" rx="10" fill="#8b5cf6"/>
+        <text id="vb-txt-frenar" x="20" y="146" font-size="15" font-weight="700" fill="#b45309">Frenar: 0%</text>
+        <text id="vb-txt-doblar" x="20" y="170" font-size="15" font-weight="700" fill="#6d28d9">Doblar: 0%</text>
+        <text id="vb-txt-queda" x="20" y="198" font-size="17" font-weight="800" fill="#047857">Libre: 100%</text>
+        <text id="vb-badge" x="20" y="226" font-size="15" font-weight="900" fill="#dc2626" style="opacity:0">RUEDA BLOQUEADA</text>
+      </g>
+
+      <!-- Círculo de Kamm -->
+      <g id="vis-circulo">
+        <text x="390" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="#0f172a">Círculo de Kamm</text>
+        <line x1="390" y1="30" x2="390" y2="210" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="300" y1="120" x2="480" y2="120" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="390" y="218" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309">Frenar</text>
+        <text x="296" y="136" font-size="10" font-weight="700" fill="#6d28d9">Doblar</text>
+        <circle id="vc-circulo" cx="390" cy="120" r="85" fill="rgba(14,165,233,0.12)" stroke="#0ea5e9" stroke-width="3"/>
+        <line id="vc-queda" x1="390" y1="120" x2="305" y2="120" stroke="#86efac" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
+        <line id="vc-freno" x1="390" y1="120" x2="390" y2="120" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" marker-end="url(#vpunta-ambar)"/>
+        <line id="vc-doblar" x1="390" y1="120" x2="390" y2="120" stroke="#8b5cf6" stroke-width="5" stroke-linecap="round" marker-end="url(#vpunta-violeta)"/>
+        <line id="vc-suma" x1="390" y1="120" x2="390" y2="120" stroke="#10b981" stroke-width="4" stroke-linecap="round" marker-end="url(#vpunta-verde)"/>
+        <circle cx="390" cy="120" r="4" fill="#0f172a"/>
+        <text id="vc-badge" x="390" y="48" text-anchor="middle" font-size="12" font-weight="900" fill="#dc2626" style="opacity:0">RUEDA BLOQUEADA</text>
+        <text id="vc-lbl-freno" x="400" y="120" font-size="13" font-weight="800" fill="#b45309" style="opacity:0">Frenar</text>
+        <text id="vc-lbl-doblar" x="390" y="108" text-anchor="middle" font-size="13" font-weight="800" fill="#6d28d9" style="opacity:0">Doblar</text>
+        <text id="vc-lbl-suma" x="380" y="200" text-anchor="end" font-size="13" font-weight="800" fill="#047857" style="opacity:0">Verde = las dos juntas</text>
+        <text id="vc-txt" x="390" y="266" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a">Todo el agarre libre</text>
+      </g>
+    </svg>
+
+    <div id="clase-quiz" hidden></div>
+
+    <div class="fila clase-botones">
+      <button class="boton" id="clase-anterior">Anterior</button>
+      <button class="boton" id="clase-play">Pausa</button>
+      <button class="boton" id="clase-repetir">Repetir</button>
+      <button class="boton principal" id="clase-volver" style="display:none">Volver a la pregunta</button>
+      <button class="boton principal" id="clase-siguiente">Siguiente</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+<script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

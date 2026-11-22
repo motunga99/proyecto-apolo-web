@@ -199,6 +199,10 @@ footer { padding: 40px 60px; border-top: 1px solid var(--border); display: flex;
       <strong>2<span>+</span>2</strong>
       proyectos listos y en desarrollo
     </div>
+    <div class="hero-stat visitas" style="display:none">
+      <strong class="visitas-num">0</strong>
+      visitas a la web
+    </div>
   </div>
 </section>
 
@@ -237,6 +241,17 @@ footer { padding: 40px 60px; border-top: 1px solid var(--border); display: flex;
   <h2 class="section-title">Nuestra <em>colección.</em></h2>
 
   <div class="cartas">
+
+    <!-- En desarrollo: Clase Magistral del CAP -->
+    <a class="carta lista" href="clase/temario.html" aria-label="Clase Magistral del CAP: disponible">
+      <div class="carta-arriba">
+        <span class="carta-estado">Disponible</span>
+        <span class="carta-tipo">Web</span>
+      </div>
+      <div class="carta-imagen"><img src="img/clase-magistral.jpg" alt=""></div>
+      <div class="carta-nombre">Clase Magistral del CAP</div>
+      <div class="carta-pie">Entrar a la clase →</div>
+    </a>
 
     <!-- Terminado: Optimizador de tokens -->
     <a class="carta lista" href="optimizador.html" aria-label="Optimizador de Tokens: proyecto terminado">
@@ -327,6 +342,14 @@ window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 });
 
+</script>
+<script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+  // Contador público de visitas (GoatCounter). Si no responde, no se muestra nada.
+  fetch('https://proyectoapolo.goatcounter.com/counter/TOTAL.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (!d) return; document.querySelectorAll('.visitas-num').forEach(e => e.textContent = d.count); document.querySelectorAll('.visitas').forEach(e => e.style.display = ''); })
+    .catch(() => {});
 </script>
 </body>
 </html>

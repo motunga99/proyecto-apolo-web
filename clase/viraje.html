@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase Magistral del CAP · Subviraje y sobreviraje</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: #7dd3fc;
+    }
+    #lienzo {
+      position: fixed;
+      inset: 0;
+      cursor: grab;
+    }
+    #lienzo:active { cursor: grabbing; }
+
+    .tarjeta {
+      background: rgba(255, 255, 255, 0.93);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+      padding: 10px 14px;
+    }
+
+    /* ---------- BARRA SUPERIOR ---------- */
+    .barra {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .barra > * { pointer-events: auto; }
+    .titulo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #4f46e5;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .titulo h1 {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      color: #1e293b;
+    }
+    .titulo p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .boton {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 9px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.4s ease, color 0.3s ease;
+    }
+    /* Destello suave de luz al pasar el mouse (sin saltos) */
+    .boton:hover {
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.7);
+    }
+    .boton.activo {
+      background: #0ea5e9;
+      border-color: #0284c7;
+      color: white;
+    }
+    .boton.noche {
+      background: #312e81;
+      border-color: #1e1b4b;
+      color: #e0e7ff;
+    }
+    .separador {
+      width: 1px;
+      height: 26px;
+      background: #e2e8f0;
+      margin: 0 2px;
+    }
+
+    /* ---------- MENSAJE (explicación tonta) ---------- */
+    #mensaje {
+      position: fixed;
+      top: 92px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(560px, calc(100% - 32px));
+      text-align: center;
+      border: 2px solid #bae6fd;
+      transition: border-color 0.4s ease, background 0.4s ease;
+    }
+    #mensaje h2 {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 19px;
+      color: #0f172a;
+    }
+    #mensaje p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #334155;
+    }
+    #mensaje.alerta {
+      border-color: #fca5a5;
+      background: rgba(254, 242, 242, 0.95);
+    }
+    #mensaje.alerta h2 { color: #b91c1c; }
+    #mensaje.destello { animation: destello 0.9s ease; }
+    @keyframes destello {
+      0% { box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.0); }
+      30% { box-shadow: 0 0 0 6px rgba(125, 211, 252, 0.55), 0 0 30px rgba(125, 211, 252, 0.8); }
+      100% { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12); }
+    }
+
+    /* ---------- PANEL DEL CÍRCULO DE KAMM ---------- */
+    .panel-kamm {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 250px;
+    }
+    .panel-titulo {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      color: #1e293b;
+    }
+    .panel-kamm svg { width: 100%; height: auto; display: block; }
+    .leyenda {
+      display: grid;
+      gap: 3px;
+      font-size: 12px;
+      color: #334155;
+      margin-top: 4px;
+    }
+    .leyenda span {
+      display: inline-block;
+      width: 16px;
+      height: 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ---------- PANEL DE CABINA ---------- */
+    .panel-cabina {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 290px;
+      background: rgba(15, 23, 42, 0.92);
+      border-color: #1e293b;
+    }
+    .panel-cabina .panel-titulo { color: #e2e8f0; }
+    .panel-cabina svg { width: 100%; height: auto; display: block; }
+
+    /* ---------- CONTROLES ---------- */
+    .controles {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: 390px;
+      display: grid;
+      gap: 8px;
+    }
+    .controles label {
+      font-size: 14px;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+    .controles label b { color: #0f172a; }
+    .controles input[type="range"] {
+      width: 100%;
+      accent-color: #0ea5e9;
+      cursor: pointer;
+    }
+    .fila {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .fila .boton { padding: 7px 12px; font-size: 13px; }
+    #btn-repetir { margin-left: auto; background: #4f46e5; border-color: #3730a3; color: white; }
+
+    /* ---------- MODOS ---------- */
+    body.modo-clase .controles,
+    body.modo-clase #mensaje { display: none; }
+    body.modo-clase:not(.clase-camion) .panel-kamm,
+    body.modo-clase:not(.clase-camion) .panel-cabina { display: none; }
+    body.modo-libre #clase { display: none; }
+    .boton.principal { background: #4f46e5; border-color: #3730a3; color: white; }
+    .boton:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+
+    /* ---------- TARJETA DEL MODO CLASE ---------- */
+    #clase {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(640px, calc(100% - 32px));
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      padding: 14px 18px;
+      border: 2px solid #c7d2fe;
+    }
+    #clase.destello { animation: destello 0.9s ease; }
+    .clase-cabecera {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .progreso {
+      flex: 1;
+      height: 6px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+    #clase-progreso {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+      transition: width 0.5s ease;
+    }
+    #clase-titulo {
+      margin: 8px 0 6px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #0f172a;
+    }
+    #clase-texto p {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+    .t-frenar { color: #b45309; }
+    .t-doblar { color: #6d28d9; }
+    .t-suma { color: #047857; }
+    #clase-nota {
+      margin: 4px 0 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      font-size: 15px;
+      font-weight: 600;
+      color: #3730a3;
+    }
+    #clase-visual { width: 100%; height: auto; display: block; margin: 4px 0 6px; }
+    .clase-botones { margin-top: 6px; }
+    .clase-botones #clase-siguiente { margin-left: auto; }
+
+    /* Preguntas */
+    .quiz-meta { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+    .quiz-enunciado { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 10px; }
+    .quiz-opciones { display: grid; gap: 8px; }
+    .opcion {
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.4s ease;
+    }
+    .opcion:hover:not(:disabled) { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.6); }
+    .opcion:disabled { cursor: default; }
+    .opcion.correcta { border-color: #22c55e; background: #dcfce7; }
+    .opcion.incorrecta { border-color: #ef4444; background: #fee2e2; }
+    .quiz-explica { margin-top: 10px; font-size: 15px; color: #1e293b; }
+    .quiz-explica p { margin: 0 0 8px; line-height: 1.45; }
+    .quiz-bien { color: #15803d; font-weight: 800; }
+    .quiz-mal { color: #b91c1c; font-weight: 800; }
+    .quiz-ojo { background: #fef9c3; border-radius: 10px; padding: 8px 10px; }
+
+    /* ---------- PANTALLA DE INICIO ---------- */
+    #inicio {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: linear-gradient(160deg, rgba(125, 211, 252, 0.55), rgba(99, 102, 241, 0.35));
+      backdrop-filter: blur(3px);
+      overflow-y: auto;
+    }
+    body.en-inicio #inicio { display: flex; }
+    body.en-inicio .barra,
+    body.en-inicio #clase,
+    body.en-inicio .controles,
+    body.en-inicio #mensaje,
+    body.en-inicio .panel-kamm,
+    body.en-inicio .panel-cabina { display: none; }
+    .inicio-caja {
+      width: min(860px, 100%);
+      max-height: 100%;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .inicio-marca {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .inicio-marca .logo { width: 52px; height: 52px; font-size: 18px; border-radius: 16px; }
+    .inicio-marca h1 {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      color: #0f172a;
+    }
+    .inicio-marca p { margin: 2px 0 0; color: #475569; font-size: 15px; }
+    .inicio-marca small { color: #6366f1; font-weight: 600; }
+    .inicio-pregunta {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #1e293b;
+      margin: 6px 0 14px;
+    }
+    .caps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .cap {
+      font-family: 'Nunito', sans-serif;
+      padding: 22px 16px;
+      border-radius: 18px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.3s ease, box-shadow 0.4s ease;
+    }
+    .cap:hover { border-color: #7dd3fc; box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.4), 0 0 26px rgba(125, 211, 252, 0.7); }
+    .cap-icono { font-size: 46px; display: block; }
+    .cap-nombre { display: block; font-weight: 900; font-size: 22px; color: #0f172a; margin-top: 6px; }
+    .cap-desc { display: block; font-size: 14px; color: #64748b; margin-top: 4px; }
+    .inicio-cabecera-temas {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .temas { display: grid; gap: 10px; }
+    .tema {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      cursor: default;
+      opacity: 0.6;
+    }
+    .tema.listo {
+      opacity: 1;
+      cursor: pointer;
+      border-color: #a5b4fc;
+      background: #eef2ff;
+      transition: box-shadow 0.4s ease, border-color 0.3s ease;
+    }
+    .tema.listo:hover { border-color: #6366f1; box-shadow: 0 0 0 4px rgba(165, 180, 252, 0.45), 0 0 24px rgba(129, 140, 248, 0.6); }
+    .tema-numero {
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #e2e8f0;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+    }
+    .tema.listo .tema-numero { background: #6366f1; color: white; }
+    .tema-cuerpo { flex: 1; display: grid; gap: 2px; }
+    .tema-nombre { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 18px; color: #0f172a; }
+    .tema-desc { font-size: 14px; color: #334155; }
+    .tema-datos { font-size: 12px; color: #64748b; }
+    .tema-estado {
+      flex: none;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+    .tema.listo .tema-estado { background: #4f46e5; color: white; }
+    .inicio-nota { font-size: 12px; color: #64748b; margin: 12px 0 0; }
+
+    /* ---------- VENTANAS QUE SE MUEVEN ---------- */
+    .agarre { cursor: move; touch-action: none; }
+    .panel-titulo.agarre::after { content: '  ⠿'; color: #94a3b8; }
+    .moviendose { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.5), 0 0 28px rgba(125, 211, 252, 0.75) !important; }
+    .btn-achicar {
+      flex: none;
+      width: 30px;
+      height: 26px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: box-shadow 0.4s ease;
+    }
+    .btn-achicar:hover { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 14px rgba(125, 211, 252, 0.7); }
+    #clase.achicada > *:not(.clase-cabecera) { display: none !important; }
+    /* Con el camión en la ruta, la tarjeta arranca arriba a la izquierda (después se mueve donde quieras) */
+    body.clase-camion #clase {
+      left: 16px;
+      top: 96px;
+      bottom: auto;
+      transform: none;
+      width: min(430px, calc(100% - 32px));
+      max-height: calc(100vh - 112px);
+    }
+
+    /* ---------- PANTALLAS CHICAS (celular) ---------- */
+    @media (max-width: 1100px) {
+      .controles {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        transform: none;
+      }
+      .panel-kamm, .panel-cabina { bottom: 210px; }
+      .panel-kamm { transform: scale(0.75); transform-origin: bottom left; }
+      .panel-cabina { transform: scale(0.75); transform-origin: bottom right; }
+    }
+    @media (max-width: 600px) {
+      .caps { grid-template-columns: 1fr; }
+      .inicio-marca h1 { font-size: 24px; }
+      .tema-estado { display: none; }
+      .titulo p { display: none; }
+      #mensaje { top: 140px; }
+      #mensaje p { font-size: 13px; }
+      .panel-kamm { transform: scale(0.6); }
+      .panel-cabina { transform: scale(0.6); }
+    }
+  
+    /* ---------- AJUSTES DE ESTA PÁGINA ---------- */
+    body:not(.clase-camion) .panel-cabina { display: none; }
+    .t-sub { color: #c2410c; }
+    .t-sobre { color: #b91c1c; }
+    .t-rojo { color: #dc2626; }
+    .t-azul { color: #2563eb; }
+    .t-verde { color: #16a34a; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- Estilo Proyecto Apolo (igual que la app) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/apolo.css">
+</head>
+<body class="modo-clase">
+  <div id="lienzo"></div>
+
+  <!-- Barra superior -->
+  <header class="barra">
+    <div class="tarjeta titulo">
+      <div class="logo">CAP</div>
+      <div>
+        <h1>Subviraje y sobreviraje</h1>
+        <p>Arrastrá para girar · rueda del mouse o dos dedos para zoom</p>
+      </div>
+    </div>
+
+    <div class="tarjeta botones">
+      <button class="boton activo" data-vista="perspectiva">Perspectiva</button>
+      <button class="boton" data-vista="costado">Costado</button>
+      <button class="boton" data-vista="arriba">Arriba</button>
+      <button class="boton" data-vista="ruedas">Ruedas</button>
+      <div class="separador"></div>
+      <button class="boton" id="boton-noche">Noche</button>
+    </div>
+  </header>
+
+  <!-- Cabina: velocímetro, volante y pedales -->
+  <div class="tarjeta panel-cabina">
+    <p class="panel-titulo">Cabina</p>
+    <svg viewBox="0 0 260 150">
+      <circle cx="60" cy="75" r="50" fill="#0b1220"/>
+      <path d="M21.9 97 A44 44 0 1 1 98.1 97" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+      <line id="cab-aguja" x1="60" y1="75" x2="60" y2="38" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="60" cy="75" r="5" fill="#f97316"/>
+      <text id="cab-kmh" x="60" y="108" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff">0</text>
+      <text x="60" y="121" text-anchor="middle" font-size="10" fill="#94a3b8">km/h</text>
+
+      <g id="cab-volante">
+        <circle cx="150" cy="75" r="34" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+        <line x1="116" y1="75" x2="184" y2="75" stroke="#e2e8f0" stroke-width="6"/>
+        <line x1="150" y1="75" x2="150" y2="109" stroke="#e2e8f0" stroke-width="6"/>
+        <circle cx="150" cy="75" r="10" fill="#475569"/>
+        <rect x="146" y="37" width="8" height="8" rx="2" fill="#f97316"/>
+      </g>
+      <text x="150" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Volante</text>
+      <text id="cab-nota" x="150" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#fdba74" style="opacity:0">VOLANTE LIVIANO</text>
+
+      <rect id="cab-freno" x="203" y="66" width="22" height="38" rx="5" fill="#64748b"/>
+      <rect id="cab-acelerador" x="232" y="56" width="18" height="48" rx="5" fill="#64748b"/>
+      <text x="214" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Freno</text>
+      <text x="241" y="135" text-anchor="middle" font-size="10" fill="#94a3b8">Acel.</text>
+    </svg>
+  </div>
+
+  <!-- Modo clase: paso a paso -->
+  <div id="clase" class="tarjeta">
+    <div class="clase-cabecera">
+      <span id="clase-paso">Paso 1</span>
+      <div class="progreso"><div id="clase-progreso"></div></div>
+      <button class="btn-achicar" id="clase-achicar" title="Achicar">–</button>
+    </div>
+    <h2 id="clase-titulo"></h2>
+    <div id="clase-texto"></div>
+    <p id="clase-nota" hidden></p>
+
+    <!-- La curva vista desde arriba -->
+    <svg id="clase-visual" viewBox="0 0 520 260">
+      <!-- Pasto y ruta -->
+      <rect x="0" y="0" width="520" height="260" rx="14" fill="#a7f3d0"/>
+      <path d="M0 210 H200 A140 140 0 0 0 340 70 V0" fill="none" stroke="#475569" stroke-width="40"/>
+      <!-- La curva que querías -->
+      <path d="M0 210 H200 A140 140 0 0 0 340 70 V0" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="10 9"/>
+      <text x="236" y="150" font-size="13" font-weight="800" fill="#0f172a">La curva que querías</text>
+      <!-- Lo que hace el camión -->
+      <path id="vv-sub" d="M20 210 H200 A230 230 0 0 0 399 95" fill="none" stroke="#f97316" stroke-width="7" stroke-linecap="round"/>
+      <path id="vv-sobre" d="M20 210 H200 A90 90 0 0 0 284.6 89.2" fill="none" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+      <g id="vv-lbl-sub">
+        <text x="408" y="128" font-size="15" font-weight="900" fill="#c2410c">más ABIERTA</text>
+        <text x="408" y="146" font-size="13" font-weight="700" fill="#c2410c">mayor radio</text>
+        <text x="408" y="166" font-size="15" font-weight="900" fill="#c2410c">= SUBviraje</text>
+      </g>
+      <g id="vv-lbl-sobre">
+        <text x="120" y="70" font-size="15" font-weight="900" fill="#b91c1c">más CERRADA</text>
+        <text x="120" y="88" font-size="13" font-weight="700" fill="#b91c1c">menor radio</text>
+        <text x="120" y="108" font-size="15" font-weight="900" fill="#b91c1c">= SOBREviraje</text>
+      </g>
+    </svg>
+
+    <div id="clase-quiz" hidden></div>
+
+    <div class="fila clase-botones">
+      <button class="boton" id="clase-anterior">Anterior</button>
+      <button class="boton" id="clase-play">Pausa</button>
+      <button class="boton" id="clase-repetir">Repetir</button>
+      <button class="boton principal" id="clase-volver" style="display:none">Volver a la pregunta</button>
+      <button class="boton principal" id="clase-siguiente">Siguiente</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main-viraje.js"></script>
+<script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
