@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase Magistral del CAP · Mercado del transporte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: #7dd3fc;
+    }
+    #lienzo {
+      position: fixed;
+      inset: 0;
+      cursor: grab;
+    }
+    #lienzo:active { cursor: grabbing; }
+
+    .tarjeta {
+      background: rgba(255, 255, 255, 0.93);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+      padding: 10px 14px;
+    }
+
+    /* ---------- BARRA SUPERIOR ---------- */
+    .barra {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .barra > * { pointer-events: auto; }
+    .titulo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #4f46e5;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .titulo h1 {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      color: #1e293b;
+    }
+    .titulo p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .boton {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 9px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.4s ease, color 0.3s ease;
+    }
+    /* Destello suave de luz al pasar el mouse (sin saltos) */
+    .boton:hover {
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.7);
+    }
+    .boton.activo {
+      background: #0ea5e9;
+      border-color: #0284c7;
+      color: white;
+    }
+    .boton.noche {
+      background: #312e81;
+      border-color: #1e1b4b;
+      color: #e0e7ff;
+    }
+    .separador {
+      width: 1px;
+      height: 26px;
+      background: #e2e8f0;
+      margin: 0 2px;
+    }
+
+    /* ---------- MENSAJE (explicación tonta) ---------- */
+    #mensaje {
+      position: fixed;
+      top: 92px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(560px, calc(100% - 32px));
+      text-align: center;
+      border: 2px solid #bae6fd;
+      transition: border-color 0.4s ease, background 0.4s ease;
+    }
+    #mensaje h2 {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 19px;
+      color: #0f172a;
+    }
+    #mensaje p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #334155;
+    }
+    #mensaje.alerta {
+      border-color: #fca5a5;
+      background: rgba(254, 242, 242, 0.95);
+    }
+    #mensaje.alerta h2 { color: #b91c1c; }
+    #mensaje.destello { animation: destello 0.9s ease; }
+    @keyframes destello {
+      0% { box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.0); }
+      30% { box-shadow: 0 0 0 6px rgba(125, 211, 252, 0.55), 0 0 30px rgba(125, 211, 252, 0.8); }
+      100% { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12); }
+    }
+
+    /* ---------- PANEL DEL CÍRCULO DE KAMM ---------- */
+    .panel-kamm {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 250px;
+    }
+    .panel-titulo {
+      margin: 0 0 4px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      color: #1e293b;
+    }
+    .panel-kamm svg { width: 100%; height: auto; display: block; }
+    .leyenda {
+      display: grid;
+      gap: 3px;
+      font-size: 12px;
+      color: #334155;
+      margin-top: 4px;
+    }
+    .leyenda span {
+      display: inline-block;
+      width: 16px;
+      height: 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ---------- PANEL DE CABINA ---------- */
+    .panel-cabina {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9;
+      width: 290px;
+      background: rgba(15, 23, 42, 0.92);
+      border-color: #1e293b;
+    }
+    .panel-cabina .panel-titulo { color: #e2e8f0; }
+    .panel-cabina svg { width: 100%; height: auto; display: block; }
+
+    /* ---------- CONTROLES ---------- */
+    .controles {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: 390px;
+      display: grid;
+      gap: 8px;
+    }
+    .controles label {
+      font-size: 14px;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+    .controles label b { color: #0f172a; }
+    .controles input[type="range"] {
+      width: 100%;
+      accent-color: #0ea5e9;
+      cursor: pointer;
+    }
+    .fila {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .fila .boton { padding: 7px 12px; font-size: 13px; }
+    #btn-repetir { margin-left: auto; background: #4f46e5; border-color: #3730a3; color: white; }
+
+    /* ---------- MODOS ---------- */
+    body.modo-clase .controles,
+    body.modo-clase #mensaje { display: none; }
+    body.modo-clase:not(.clase-camion) .panel-kamm,
+    body.modo-clase:not(.clase-camion) .panel-cabina { display: none; }
+    body.modo-libre #clase { display: none; }
+    .boton.principal { background: #4f46e5; border-color: #3730a3; color: white; }
+    .boton:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+
+    /* ---------- TARJETA DEL MODO CLASE ---------- */
+    #clase {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 9;
+      width: min(640px, calc(100% - 32px));
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      padding: 14px 18px;
+      border: 2px solid #c7d2fe;
+    }
+    #clase.destello { animation: destello 0.9s ease; }
+    .clase-cabecera {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .progreso {
+      flex: 1;
+      height: 6px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+    #clase-progreso {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+      transition: width 0.5s ease;
+    }
+    #clase-titulo {
+      margin: 8px 0 6px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #0f172a;
+    }
+    #clase-texto p {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+    .t-frenar { color: #b45309; }
+    .t-doblar { color: #6d28d9; }
+    .t-suma { color: #047857; }
+    #clase-nota {
+      margin: 4px 0 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      font-size: 15px;
+      font-weight: 600;
+      color: #3730a3;
+    }
+    #clase-visual { width: 100%; height: auto; display: block; margin: 4px 0 6px; }
+    .clase-botones { margin-top: 6px; }
+    .clase-botones #clase-siguiente { margin-left: auto; }
+
+    /* Preguntas */
+    .quiz-meta { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+    .quiz-enunciado { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 10px; }
+    .quiz-opciones { display: grid; gap: 8px; }
+    .opcion {
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.4s ease;
+    }
+    .opcion:hover:not(:disabled) { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 18px rgba(125, 211, 252, 0.6); }
+    .opcion:disabled { cursor: default; }
+    .opcion.correcta { border-color: #22c55e; background: #dcfce7; }
+    .opcion.incorrecta { border-color: #ef4444; background: #fee2e2; }
+    .quiz-explica { margin-top: 10px; font-size: 15px; color: #1e293b; }
+    .quiz-explica p { margin: 0 0 8px; line-height: 1.45; }
+    .quiz-bien { color: #15803d; font-weight: 800; }
+    .quiz-mal { color: #b91c1c; font-weight: 800; }
+    .quiz-ojo { background: #fef9c3; border-radius: 10px; padding: 8px 10px; }
+
+    /* ---------- PANTALLA DE INICIO ---------- */
+    #inicio {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: linear-gradient(160deg, rgba(125, 211, 252, 0.55), rgba(99, 102, 241, 0.35));
+      backdrop-filter: blur(3px);
+      overflow-y: auto;
+    }
+    body.en-inicio #inicio { display: flex; }
+    body.en-inicio .barra,
+    body.en-inicio #clase,
+    body.en-inicio .controles,
+    body.en-inicio #mensaje,
+    body.en-inicio .panel-kamm,
+    body.en-inicio .panel-cabina { display: none; }
+    .inicio-caja {
+      width: min(860px, 100%);
+      max-height: 100%;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .inicio-marca {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .inicio-marca .logo { width: 52px; height: 52px; font-size: 18px; border-radius: 16px; }
+    .inicio-marca h1 {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      color: #0f172a;
+    }
+    .inicio-marca p { margin: 2px 0 0; color: #475569; font-size: 15px; }
+    .inicio-marca small { color: #6366f1; font-weight: 600; }
+    .inicio-pregunta {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #1e293b;
+      margin: 6px 0 14px;
+    }
+    .caps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .cap {
+      font-family: 'Nunito', sans-serif;
+      padding: 22px 16px;
+      border-radius: 18px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.3s ease, box-shadow 0.4s ease;
+    }
+    .cap:hover { border-color: #7dd3fc; box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.4), 0 0 26px rgba(125, 211, 252, 0.7); }
+    .cap-icono { font-size: 46px; display: block; }
+    .cap-nombre { display: block; font-weight: 900; font-size: 22px; color: #0f172a; margin-top: 6px; }
+    .cap-desc { display: block; font-size: 14px; color: #64748b; margin-top: 4px; }
+    .inicio-cabecera-temas {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .temas { display: grid; gap: 10px; }
+    .tema {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      cursor: default;
+      opacity: 0.6;
+    }
+    .tema.listo {
+      opacity: 1;
+      cursor: pointer;
+      border-color: #a5b4fc;
+      background: #eef2ff;
+      transition: box-shadow 0.4s ease, border-color 0.3s ease;
+    }
+    .tema.listo:hover { border-color: #6366f1; box-shadow: 0 0 0 4px rgba(165, 180, 252, 0.45), 0 0 24px rgba(129, 140, 248, 0.6); }
+    .tema-numero {
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #e2e8f0;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+    }
+    .tema.listo .tema-numero { background: #6366f1; color: white; }
+    .tema-cuerpo { flex: 1; display: grid; gap: 2px; }
+    .tema-nombre { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 18px; color: #0f172a; }
+    .tema-desc { font-size: 14px; color: #334155; }
+    .tema-datos { font-size: 12px; color: #64748b; }
+    .tema-estado {
+      flex: none;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+    .tema.listo .tema-estado { background: #4f46e5; color: white; }
+    .inicio-nota { font-size: 12px; color: #64748b; margin: 12px 0 0; }
+
+    /* ---------- VENTANAS QUE SE MUEVEN ---------- */
+    .agarre { cursor: move; touch-action: none; }
+    .panel-titulo.agarre::after { content: '  ⠿'; color: #94a3b8; }
+    .moviendose { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.5), 0 0 28px rgba(125, 211, 252, 0.75) !important; }
+    .btn-achicar {
+      flex: none;
+      width: 30px;
+      height: 26px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: box-shadow 0.4s ease;
+    }
+    .btn-achicar:hover { box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.45), 0 0 14px rgba(125, 211, 252, 0.7); }
+    #clase.achicada > *:not(.clase-cabecera) { display: none !important; }
+    /* Con el camión en la ruta, la tarjeta arranca arriba a la izquierda (después se mueve donde quieras) */
+    body.clase-camion #clase {
+      left: 16px;
+      top: 96px;
+      bottom: auto;
+      transform: none;
+      width: min(430px, calc(100% - 32px));
+      max-height: calc(100vh - 112px);
+    }
+
+    /* ---------- PANTALLAS CHICAS (celular) ---------- */
+    @media (max-width: 1100px) {
+      .controles {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        transform: none;
+      }
+      .panel-kamm, .panel-cabina { bottom: 210px; }
+      .panel-kamm { transform: scale(0.75); transform-origin: bottom left; }
+      .panel-cabina { transform: scale(0.75); transform-origin: bottom right; }
+    }
+    @media (max-width: 600px) {
+      .caps { grid-template-columns: 1fr; }
+      .inicio-marca h1 { font-size: 24px; }
+      .tema-estado { display: none; }
+      .titulo p { display: none; }
+      #mensaje { top: 140px; }
+      #mensaje p { font-size: 13px; }
+      .panel-kamm { transform: scale(0.6); }
+      .panel-cabina { transform: scale(0.6); }
+    }
+  
+    /* ---------- AJUSTES DE ESTA PÁGINA ---------- */
+    body:not(.clase-camion) .panel-cabina { display: none; }
+    .t-sub { color: #c2410c; }
+    .t-sobre { color: #b91c1c; }
+    .t-rojo { color: #dc2626; }
+    .t-azul { color: #2563eb; }
+    .t-verde { color: #16a34a; }
+  
+    /* La tarjeta siempre por encima de la barra de arriba, para poder agarrarla,
+       y arranca abajo a la izquierda (después se mueve donde quieras) */
+    #clase { z-index: 15; }
+    body.clase-camion #clase {
+      top: auto;
+      bottom: 16px;
+      max-height: calc(100vh - 130px);
+    }
+
+    /* ---------- CARTELITOS SOBRE LAS COSAS ---------- */
+    #etiquetas { position: fixed; inset: 0; pointer-events: none; z-index: 8; overflow: hidden; }
+    .etiqueta3d {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+    .etq-in {
+      max-width: 300px;
+      padding: 11px 18px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1.25;
+      color: #0f172a;
+      text-align: center;
+      transform-origin: 50% 100%;
+    }
+    /* Al aparecer: crece suave desde chico y se ilumina (sin rebote) */
+    .etiqueta3d.aparece .etq-in { animation: etqCrece 0.7s cubic-bezier(0.22, 1, 0.36, 1), etqLuz 2.2s ease-out; }
+    @keyframes etqCrece {
+      from { transform: scale(0.6); }
+      to { transform: scale(1); }
+    }
+    @keyframes etqLuz {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); filter: brightness(1.35); }
+      25% { box-shadow: 0 0 0 8px rgba(125, 211, 252, 0.55), 0 0 40px 10px rgba(125, 211, 252, 0.85); filter: brightness(1.15); }
+      100% { box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18); filter: brightness(1); }
+    }
+    .etiqueta3d.globo .etq-in { border-color: #c7d2fe; border-radius: 20px; font-weight: 800; position: relative; max-width: 230px; font-size: 16px; }
+    .etiqueta3d.globo .etq-in::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      width: 15px;
+      height: 15px;
+      background: #ffffff;
+      border-right: 3px solid #c7d2fe;
+      border-bottom: 3px solid #c7d2fe;
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .etiqueta3d.precio .etq-in { background: #dcfce7; border-color: #22c55e; color: #166534; }
+    .etiqueta3d.deuda .etq-in { background: #fee2e2; border-color: #ef4444; color: #991b1b; font-size: 22px; }
+    .etiqueta3d.ok .etq-in { background: #e0f2fe; border-color: #0ea5e9; color: #075985; font-size: 20px; }
+    .etiqueta3d.aviso .etq-in { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+    .etiqueta3d.grande .etq-in { background: #fef9c3; border-color: #eab308; color: #713f12; font-size: 22px; }
+    .etiqueta3d.deuda.aparece .etq-in { animation: etqCrece 0.7s cubic-bezier(0.22, 1, 0.36, 1), etqLuzRoja 2.2s ease-out; }
+    @keyframes etqLuzRoja {
+      0% { filter: brightness(1.35); }
+      25% { box-shadow: 0 0 0 8px rgba(248, 113, 113, 0.55), 0 0 40px 10px rgba(248, 113, 113, 0.8); }
+      100% { box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18); filter: brightness(1); }
+    }
+    .clase-tipo {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      color: #ffffff;
+      background: #64748b;
+    }
+    .clase-tipo.autonomo { background: #059669; }
+    .clase-tipo.sa { background: #4f46e5; }
+    #clase-barra { width: 100%; height: auto; display: none; margin: 4px 0 6px; }
+
+    /* Capítulos: una sociedad por botón */
+    .capitulos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .capitulo {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 12px;
+      padding: 5px 10px; border-radius: 999px; cursor: pointer;
+      border: 1.5px solid #c7d2fe; background: #eef2ff; color: #3730a3;
+    }
+    .capitulo.activo { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
+    .capitulo:disabled { cursor: default; opacity: 0.5; background: #f1f5f9; border-color: #e2e8f0; color: #64748b; }
+    .capitulo small { font-weight: 700; }
+
+    /* SL: lo que es distinto a la SA, en naranja */
+    .clase-tipo.sl { background: #ea580c; }
+    .distinto { background: #ffedd5; color: #9a3412; font-weight: 800; padding: 0 4px; border-radius: 5px; box-shadow: inset 0 -2px 0 #fb923c; }
+    .badge-dif, .badge-igual {
+      display: inline-block; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 11px;
+      padding: 2px 8px; border-radius: 999px; margin-right: 4px; vertical-align: 1px; color: #ffffff;
+    }
+    .badge-dif { background: #ea580c; }
+    .badge-dif.slne { background: #c2410c; }
+    .badge-igual { background: #0284c7; }
+
+    /* ---------- CARPETA DE LA CABINA ---------- */
+    #carpeta { position: fixed; right: 16px; top: 112px; z-index: 14; width: 290px; max-height: calc(100vh - 140px); overflow-y: auto; }
+    .carpeta-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; cursor: move; }
+    .carpeta-cabecera span { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #22D3EE; }
+    #carpeta.achicada #carpeta-lista { display: none; }
+    .carpeta-vacia { margin: 0; font-size: 14px; color: #94A3B8; }
+    .doc { border-radius: 14px; padding: 9px 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
+    .doc b { display: block; color: #FFFFFF; font-size: 14px; }
+    .doc span { display: block; color: #CBD5E1; font-size: 12.5px; margin-top: 2px; }
+    .doc.verde { border-left: 5px solid #34F5A0; }
+    .doc.azul { border-left: 5px solid #38BDF8; }
+    .doc.rojo { border-left: 5px solid #FF6B6B; }
+    .doc.nuevo { animation: docLuz 1.8s ease-out; }
+    @keyframes docLuz {
+      0% { box-shadow: 0 0 0 0 rgba(52,245,160,0); background: rgba(52,245,160,0.25); }
+      30% { box-shadow: 0 0 0 4px rgba(52,245,160,0.45), 0 0 26px rgba(52,245,160,0.5); }
+      100% { box-shadow: none; background: rgba(255,255,255,0.04); }
+    }
+    .clase-tipo.nacional { background: #16a34a; }
+    .clase-tipo.publico { background: #0284c7; }
+    .clase-tipo.privado { background: #ea580c; }
+    .clase-tipo.exento { background: #7c3aed; }
+    .clase-tipo.autorizacion { background: #15803d; }
+    .clase-tipo.control { background: #b45309; }
+    .clase-tipo.inspector { background: #1e3a8a; }
+    @media (max-width: 900px) { #carpeta { top: auto; bottom: 16px; width: 240px; } }
+
+    /* ---------- FIGURA (dibujos de Gemini) ---------- */
+    #figura { position: fixed; right: 16px; top: 92px; z-index: 14; width: 300px; display: flex; gap: 12px; align-items: center; }
+    #figura img { width: 110px; height: 100px; object-fit: contain; flex: none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); }
+    #figura b { display: block; color: #fff; font: 900 15px 'Nunito', sans-serif; margin-bottom: 4px; }
+    #figura span { display: block; color: #cbd5e1; font-size: 13px; line-height: 1.35; }
+    #figura.aparece { animation: docLuz 1.8s ease-out; }
+    /* ---------- CABINA ---------- */
+    #cabina { position: fixed; right: 16px; bottom: 16px; z-index: 14; width: 300px; }
+    .cabina-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; cursor: move; }
+    .cabina-cabecera span { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #22D3EE; }
+    #cabina.achicada .cabina-cuerpo { display: none; }
+    .tablero { position: relative; }
+    .tablero img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); }
+    .tablero i { position: absolute; top: 49.8%; width: 4.4%; height: 4.6%; transform: translate(-50%, -50%); border-radius: 4px; background: #f59e0b; opacity: 0.15; transition: opacity 0.15s linear; }
+    .tablero i.on { box-shadow: 0 0 10px 3px rgba(245, 158, 11, 0.85); }
+    .cabina-testigo { margin: 4px 0 2px; text-align: center; font: 800 13px 'Nunito', sans-serif; color: #fbbf24; min-height: 18px; }
+    .cabina-medidas { width: 100%; height: auto; display: block; }
+    .termo-txt { font: 700 12px 'Nunito', sans-serif; color: #cbd5e1; margin-top: 4px; }
+    .termo { height: 12px; border-radius: 6px; background: #1e293b; overflow: hidden; margin-top: 3px; }
+    #cab-termo { height: 100%; width: 0; transition: width 0.2s linear; }
+    .clase-tipo.motor { background: #b45309; }
+    .clase-tipo.atp { background: #0891b2; }
+    .clase-tipo.adr { background: #ea580c; }
+    .clase-tipo.empresa { background: #2563eb; }
+    .clase-tipo.prevencion { background: #16a34a; }
+    .clase-tipo.accidente { background: #b91c1c; }
+    .clase-tipo.riesgos { background: #ea580c; }
+    .clase-tipo.epi { background: #7c3aed; }
+    .clase-tipo.clases { background: #0891b2; }
+    .clase-tipo.sector { background: #16a34a; }
+    .clase-tipo.interm { background: #ca8a04; }
+    .clase-tipo.contrato { background: #2563eb; }
+    .clase-tipo.seguros { background: #b91c1c; }
+    .clase-tipo.juntas { background: #7c3aed; }
+    .clase-tipo.clases1 { background: #dc2626; }
+    .clase-tipo.clases2 { background: #ca8a04; }
+    .clase-tipo.panel { background: #f97316; }
+    .clase-tipo.etiq { background: #be123c; }
+    .clase-tipo.papeles { background: #2563eb; }
+    .clase-tipo.quien { background: #7c3aed; }
+    .clase-tipo.ruta { background: #16a34a; }
+    .clase-tipo.acc { background: #b91c1c; }
+    .clase-tipo.tipos { background: #2563eb; }
+    .clase-tipo.siglas { background: #7c3aed; }
+    .clase-tipo.alimentacion { background: #0891b2; }
+    .clase-tipo.curvas { background: #16a34a; }
+    .clase-tipo.transmision { background: #7c3aed; }
+    .clase-tipo.consumo { background: #059669; }
+    .clase-tipo.mantenimiento { background: #2563eb; }
+    .clase-tipo.contaminacion { background: #475569; }
+    #figura.con-anim { flex-direction: column; width: 340px; align-items: stretch; }
+    #figura-anim { width: 100%; }
+    .cab-fila { display: flex; gap: 10px; align-items: center; }
+    #escenario { position: fixed; inset: 0; z-index: 7; display: none; background: radial-gradient(circle at 62% 42%, #1e293b 0%, #0b1220 62%, #05080e 100%); }
+    body.en-escenario #escenario { display: block; }
+    body.en-escenario #cabina, body.en-escenario #figura, body.en-escenario #etiquetas, body.en-escenario .botones { display: none !important; }
+    #esc-caja { position: absolute; left: 470px; right: 32px; top: 100px; bottom: 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    #esc-anim { width: min(820px, 100%); }
+    #esc-anim svg { width: 100%; height: auto; max-height: 68vh; display: block; border-radius: 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(34,211,238,0.15); }
+    #esc-img { max-width: min(560px, 90%); max-height: 56vh; object-fit: contain; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.6)); }
+    #esc-titulo { color: #fff; font: 900 26px 'Nunito', sans-serif; text-align: center; }
+    #esc-texto { color: #cbd5e1; font-size: 16px; line-height: 1.45; text-align: center; max-width: 760px; }
+    #esc-caja.aparece { animation: docLuz 1.8s ease-out; }
+    #esc-anim { width: min(820px, 100%, calc((100vh - 230px) * 1.23)); }
+    @media (max-width: 900px) { #esc-caja { left: 16px; right: 16px; top: 90px; bottom: auto; height: 45vh; } #esc-titulo { font-size: 18px; } #esc-texto { font-size: 13px; } }
+    @media (max-width: 1100px) { #figura.con-anim { width: 280px; } }
+    @media (max-width: 1100px) { #figura { top: auto; bottom: 330px; } #cabina { transform: scale(0.8); transform-origin: bottom right; } }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- Estilo Proyecto Apolo (igual que la app) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/apolo.css">
+</head>
+<body class="modo-clase clase-camion">
+  <div id="lienzo"></div>
+  <div id="etiquetas"></div>
+  <!-- Fondo oscuro con la animación grande, cuando el camión no hace falta -->
+  <div id="escenario"><div id="esc-caja"><div id="esc-anim"></div><img id="esc-img" alt="" style="display:none"><div id="esc-titulo"></div><div id="esc-texto"></div></div></div>
+
+  <!-- Barra superior -->
+  <header class="barra">
+    <div class="tarjeta titulo">
+      <div class="logo">CAP</div>
+      <div>
+        <h1>Mercado del transporte · Mercancías</h1>
+        <p>Arrastrá para girar · rueda del mouse o dos dedos para zoom</p>
+      </div>
+    </div>
+    <div class="tarjeta botones">
+      <button class="boton activo" data-vista="perspectiva">Perspectiva</button>
+      <button class="boton" data-vista="arriba">Arriba</button>
+      <button class="boton" data-vista="costado">Costado</button>
+      <button class="boton" data-vista="ruedas">Ruedas</button>
+      <div class="separador"></div>
+      <button class="boton" id="boton-noche">Noche</button>
+    </div>
+  </header>
+
+  <!-- Modo clase: paso a paso -->
+  <div id="clase" class="tarjeta">
+    <div class="clase-cabecera">
+      <span id="clase-paso">Paso 1</span>
+      <div class="progreso"><div id="clase-progreso"></div></div>
+      <button class="btn-achicar" id="clase-achicar" title="Achicar">–</button>
+    </div>
+    <div id="clase-capitulos" class="capitulos"></div>
+    <div id="clase-tipo" class="clase-tipo" style="display:none"></div>
+    <h2 id="clase-titulo"></h2>
+    <div id="clase-texto"></div>
+
+    <!-- Barra del 25% -->
+    <svg id="clase-barra" viewBox="0 0 520 120">
+      <text x="30" y="24" font-size="14" font-weight="800" fill="#0f172a">Capital total: 60.000 €</text>
+      <rect x="30" y="36" width="460" height="36" rx="10" fill="#e2e8f0"/>
+      <rect id="barra-relleno" x="30" y="36" width="0" height="36" rx="10" fill="#22c55e"/>
+      <g id="barra-texto" style="opacity:0">
+        <text id="barra-izq" x="30" y="96" font-size="14" font-weight="800" fill="#15803d">Día 1: 15.000 € (25%)</text>
+        <text id="barra-der" x="490" y="96" text-anchor="end" font-size="14" font-weight="700" fill="#64748b">El resto (45.000 €): después</text>
+      </g>
+    </svg>
+
+    <div id="clase-quiz" hidden></div>
+
+    <div class="fila clase-botones">
+      <button class="boton" id="clase-anterior">Anterior</button>
+      <button class="boton" id="clase-play">Pausa</button>
+      <button class="boton" id="clase-repetir">Repetir</button>
+      <button class="boton principal" id="clase-volver" style="display:none">Volver a la pregunta</button>
+      <button class="boton principal" id="clase-siguiente">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Dibujo que acompaña el paso (frenos, asiento, airbag...) -->
+  <div id="figura" class="tarjeta" style="display:none">
+    <img id="figura-img" alt="">
+    <div id="figura-anim" style="display:none"></div>
+    <div><b id="figura-titulo"></b><span id="figura-texto"></span></div>
+  </div>
+
+  <!-- Cabina: cuentarrevoluciones con la zona verde, marcha, velocidad y consumo -->
+  <div id="cabina" class="tarjeta">
+    <div class="cabina-cabecera"><span>Cabina del camión A</span><button class="btn-achicar" id="cabina-achicar" title="Achicar">–</button></div>
+    <div class="cabina-cuerpo">
+      <svg viewBox="0 0 280 150" class="cabina-medidas">
+        <circle cx="70" cy="72" r="62" fill="#0b1220" stroke="#1e293b" stroke-width="3"/>
+        <path id="cab-arco" fill="none" stroke="#334155" stroke-width="9"/>
+        <path id="cab-verde" fill="none" stroke="#22c55e" stroke-width="9"/>
+        <path id="cab-roja" fill="none" stroke="#ef4444" stroke-width="9"/>
+        <g id="cab-marcas"></g>
+        <line id="cab-rpm-aguja" x1="70" y1="72" x2="70" y2="28" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" transform="rotate(-135 70 72)"/>
+        <circle cx="70" cy="72" r="6" fill="#f97316"/>
+        <text x="70" y="104" text-anchor="middle" font-size="9" fill="#94a3b8">× 1000 vueltas/min</text>
+        <text id="cab-rpm" x="70" y="122" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">600</text>
+        <text x="70" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">vueltas por minuto</text>
+        <text x="160" y="20" font-size="10" fill="#94a3b8">Marcha</text>
+        <text id="cab-marcha" x="160" y="52" font-size="30" font-weight="900" fill="#fbbf24">N</text>
+        <text x="214" y="20" font-size="10" fill="#94a3b8">km/h</text>
+        <text id="cab-kmh" x="214" y="52" font-size="26" font-weight="900" fill="#fff">0</text>
+        <text x="160" y="80" font-size="10" fill="#94a3b8">Consumo ahora</text>
+        <rect x="160" y="86" width="110" height="12" rx="6" fill="#1e293b"/>
+        <rect id="cab-consumo-bar" x="160" y="86" width="0" height="12" rx="6" fill="#22c55e"/>
+        <text id="cab-consumo" x="160" y="114" font-size="13" font-weight="800" fill="#fff">0 L/100 km</text>
+        <text x="160" y="132" font-size="10" fill="#94a3b8">Gastado:</text>
+        <text id="cab-litros" x="208" y="132" font-size="12" font-weight="800" fill="#fbbf24">0,00 L</text>
+      </svg>
+      <div class="cabina-testigo" id="cab-testigo">Motor al ralentí</div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main-mercado.js"></script>
+<script data-goatcounter="https://proyectoapolo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
