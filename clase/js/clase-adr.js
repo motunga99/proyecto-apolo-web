@@ -147,6 +147,8 @@ export function crearClaseMecanica({ escena, tiempo, setVista }) {
     escena.configurar(paso.sim || 'quieto');
     setVista(paso.vista || 'perspectiva');
     escena.figura(paso.figura || null);
+    // Pasos con muñequitos (escena): se arma el escenario de personajes
+    if (escena.historia) escena.historia.activar(paso.escena || null, paso.base || []);
     tLinea = 0; proximo = 0;
     tiempo.pausado = false;
 
@@ -175,7 +177,7 @@ export function crearClaseMecanica({ escena, tiempo, setVista }) {
     tLinea += dt;
     const linea = paso.linea || [];
     while (proximo < linea.length && tLinea >= linea[proximo][0]) {
-      linea[proximo][1](escena);
+      linea[proximo][1](paso.escena && escena.historia ? escena.historia : escena);
       proximo++;
     }
   }

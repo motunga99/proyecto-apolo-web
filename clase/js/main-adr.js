@@ -8,6 +8,7 @@ import { crearMundo } from './mundo.js';
 import { crearEscenaMecanica, VERDE, ROJA, RPM_MAX } from './escena-mecanica.js';
 import { montarAnim } from './anim-adr.js';
 import { crearClaseMecanica } from './clase-adr.js';
+import { crearEscenarioMercado } from './escenario-mercado.js';
 import { hacerMovible, hacerAchicable } from './ventana.js';
 
 const contenedor = document.getElementById('lienzo');
@@ -206,6 +207,21 @@ const fachada = {
   configurar: m => { sim.configurar(m); saltoPendiente = true; ponerEscenario(!m || m === 'quieto'); },
   etiqueta, limpiarCarteles, figura,
   alCambiarEstado: fn => sim.alCambiarEstado(fn)
+};
+// ---------- ESCENAS CON MUÑEQUITOS (Papeles y Quién hace qué) ----------
+const historia = crearEscenarioMercado({ id: 'historia', z: 8 });
+const raizHistoria = document.getElementById('historia');
+raizHistoria.style.display = 'none';
+fachada.historia = {
+  ...historia,
+  activar(esc, base) {
+    historia.limpiar();
+    if (!esc) { raizHistoria.style.display = 'none'; escCaja.style.visibility = ''; historia.preparar({}); return; }
+    raizHistoria.style.display = '';
+    escCaja.style.visibility = 'hidden';
+    historia.preparar(esc);
+    base.forEach(n => historia.yaVisible(n));
+  }
 };
 const clase = crearClaseMecanica({ escena: fachada, tiempo, setVista });
 

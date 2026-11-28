@@ -77,10 +77,22 @@ const CATALOGO = {
   ambulancia: { img: 'ambulancia', alto: 120 },
   tarjetaCap: { img: 'tarjeta-cap', alto: 80, sinSombra: true },
   casa: { img: 'casa', alto: 190 },
-  auto: { img: 'auto', alto: 80 }
+  auto: { img: 'auto', alto: 80 },
+  // ADR: quién hace qué y los papeles
+  expedidor: { img: 'expedidor', alto: 300, cara: 1 },
+  cargador: { img: 'cargador', alto: 300, cara: 1 },
+  transportista: { img: 'transportista', alto: 300, cara: 1 },
+  destinataria: { img: 'destinataria', alto: 300, cara: 1 },
+  cisterna: { img: 'camion-cisterna', alto: 140 },
+  quimica: { img: 'edif-quimica', alto: 200 },
+  gasolinera: { img: 'gasolinera', alto: 170 },
+  instrucciones: { img: 'instrucciones', alto: 110, sinSombra: true },
+  calzo: { img: 'calzo', alto: 50 },
+  dni: { img: 'licencia', alto: 80, sinSombra: true },
+  autorizacion: { img: 'certificado', alto: 80, sinSombra: true }
 };
 
-const CSS = `
+const CSS_BASE = `
 #escenario { position: fixed; left: 466px; right: 16px; top: 92px; bottom: 16px; z-index: 5; overflow: hidden; border-radius: 22px; }
 #escenario .ajuste { position: absolute; left: 50%; top: 50%; width: ${W}px; height: ${H}px; transform-origin: 0 0; }
 #escenario .mundo { position: absolute; inset: 0; transform-origin: 0 0; }
@@ -130,13 +142,14 @@ const CSS = `
 @media (max-width: 1100px) { #escenario { left: 8px; right: 8px; top: 84px; bottom: auto; height: 46vh; } }
 `;
 
-export function crearEscenarioMercado() {
+export function crearEscenarioMercado({ id = 'escenario', z = 5 } = {}) {
   const estilo = document.createElement('style');
-  estilo.textContent = CSS;
+  // el id se puede cambiar (en ADR ya existe un #escenario)
+  estilo.textContent = CSS_BASE.split('#escenario').join('#' + id).replace('z-index: 5; overflow', `z-index: ${z}; overflow`);
   document.head.appendChild(estilo);
 
   const raiz = document.createElement('div');
-  raiz.id = 'escenario';
+  raiz.id = id;
   raiz.innerHTML = `<div class="ajuste"><div class="mundo"><div class="fondo"></div><div class="piso"></div></div></div>`;
   document.body.appendChild(raiz);
   const ajuste = raiz.querySelector('.ajuste');

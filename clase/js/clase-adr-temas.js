@@ -430,14 +430,28 @@ export const PASOS_ADR_PAPELES = [
     "tipo": "papeles",
     "titulo": "Los papeles a bordo",
     "texto": [
-      "Antes de salir, Damian revisa la carpeta. Tienen que ir <b>a bordo</b>:",
+      "Antes de salir, Juan revisa la carpeta. Tienen que ir <b>a bordo</b>:",
       "• <b>Carta de porte:</b> dice qué mercancía es (<b>UN + número ONU</b>), <b>cuánta</b> y quién la manda (<b>expedidor</b>, con nombre y dirección). No hace falta que diga que va en cisterna.<br>• Cisterna vacía: la carta de porte dice <b>\"vehículo cisterna vacío\"</b> y los datos de la <b>última mercancía</b>.",
       "• <b>Instrucciones escritas:</b> qué hacer en una <b>emergencia</b>. Van en la <b>cabina</b>, en un idioma que la <b>tripulación pueda leer y entender</b> (como mínimo, el del conductor).",
       "• Un <b>documento con foto</b> (DNI) de cada persona del camión.<br>• El <b>certificado de aprobación</b>, cuando el ADR lo pide.",
-      "No alcanza con llevarlos: Damian revisa que estén <b>vigentes</b>. La <b>póliza del seguro</b> no es obligatorio llevarla."
+      "No alcanza con llevarlos: Juan revisa que estén <b>vigentes</b>. La <b>póliza del seguro</b> no es obligatorio llevarla."
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { juan: ['juan', 250], cisterna: ['cisterna', 820], cp: ['papel', 520, { abajo: 360, alto: 110 }], ins: ['instrucciones', 520, { abajo: 370 }], dni: ['dni', 520, { abajo: 350, alto: 90 }], cert: ['poliza', 520, { abajo: 360, alto: 110 }] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('LOS PAPELES QUE VAN EN EL CAMIÓN')],
+  [0.5, e => { e.mostrar('juan'); e.mostrar('cisterna'); }],
+  [1.2, e => e.globo('juan', 'Antes de salir, reviso la carpeta')],
+  [3.0, e => { e.mostrar('cp'); e.etiqueta('cp', '1. CARTA DE PORTE: qué es (número ONU), cuánto y quién lo manda', 'ok'); }],
+  [7.0, e => e.etiqueta('cp', 'Cisterna vacía: dice "vehículo cisterna vacío" y la última mercancía', 'aviso')],
+  [10.4, e => { e.ocultar('cp'); e.volar('papel', 'cp', 'cisterna'); e.mostrar('ins'); e.etiqueta('ins', '2. INSTRUCCIONES ESCRITAS: qué hacer en una emergencia. En la cabina, en tu idioma', 'ok'); }],
+  [14.6, e => { e.ocultar('ins'); e.volar('instrucciones', 'ins', 'cisterna'); e.mostrar('dni'); e.etiqueta('dni', '3. DNI con foto de cada persona del camión', 'ok'); }],
+  [17.8, e => { e.ocultar('dni'); e.volar('dni', 'dni', 'cisterna'); e.mostrar('cert'); e.etiqueta('cert', '4. CERTIFICADO DE APROBACIÓN, si el ADR lo pide', 'ok'); }],
+  [21.0, e => { e.ocultar('cert'); e.volar('poliza', 'cert', 'cisterna'); e.globo('juan', 'Y reviso que estén VIGENTES'); }],
+  [23.6, e => e.etiqueta('pol', 'La póliza del seguro NO hace falta llevarla', 'aviso', [560, 150])]
+],
     "figura": {
       "anim": "papeles",
       "titulo": "Los papeles",
@@ -464,9 +478,9 @@ export const PASOS_ADR_PAPELES = [
   },
   {
     "tipo": "papeles",
-    "titulo": "Damian y su autorización",
+    "titulo": "La autorización del conductor",
     "texto": [
-      "Damian también necesita su papel: la <b>autorización especial ADR del conductor</b>. Se la da la <b>DGT</b> y dura <b>cinco años</b>.",
+      "Juan también necesita su papel: la <b>autorización especial ADR del conductor</b>. Se la da la <b>DGT</b> y dura <b>cinco años</b>.",
       "Para mercancías que no son explosivos ni radiactivos alcanza con la <b>básica</b>, aunque el camión sea chico (3 t).",
       "<b>Sin esa autorización no se puede ni empezar a cargar.</b> Al cargador se le muestra la autorización y, si hace falta, el certificado del camión. En un camión <b>furgón</b> (caja), el cargador no tiene que pedir esos papeles.",
       "<b>Alcohol:</b> con mercancías peligrosas, máximo <b>0,3 gramos por litro en sangre</b> o <b>0,15 mg por litro</b> en el soplido.",
@@ -474,6 +488,21 @@ export const PASOS_ADR_PAPELES = [
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { inspector: ['inspector', 200], juan: ['juan', 450], cisterna: ['cisterna', 760], cargador: ['cargador', 980] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('EL PAPEL DEL CONDUCTOR')],
+  [0.5, e => { e.mostrar('inspector'); e.mostrar('juan'); }],
+  [1.2, e => e.globo('inspector', 'De la DGT: tu autorización ADR. Dura 5 años')],
+  [3.2, e => e.volar('autorizacion', 'inspector', 'juan')],
+  [4.6, e => e.etiqueta('juan', 'AUTORIZACIÓN ADR DEL CONDUCTOR', 'ok')],
+  [7.2, e => e.etiqueta('bas', 'Si no son explosivos ni radiactivos, alcanza con la BÁSICA (aunque el camión sea chico)', 'precio', [560, 140])],
+  [11.4, e => { e.titulo('ANTES DE CARGAR'); e.etiqueta('bas', null); e.ocultar('inspector'); e.mostrar('cisterna'); e.mostrar('cargador'); }],
+  [12.4, e => e.globo('cargador', '¿Tu autorización? Y si hace falta, el certificado del camión')],
+  [14.6, e => e.volar('autorizacion', 'juan', 'cargador')],
+  [15.8, e => e.etiqueta('cargador', 'Sin autorización NO se empieza a cargar', 'deuda')],
+  [18.8, e => e.etiqueta('bas', 'Alcohol: máximo 0,3 g/l en sangre o 0,15 mg/l en el soplido', 'aviso', [560, 140])]
+],
     "figura": {
       "anim": "conductor",
       "titulo": "La autorización",
@@ -484,7 +513,7 @@ export const PASOS_ADR_PAPELES = [
     "tipo": "papeles",
     "titulo": "El equipo del camión",
     "texto": [
-      "En el camión de Damian tiene que haber:",
+      "En el camión de Juan tiene que haber:",
       "• Para <b>cada persona</b>: una <b>linterna</b> y un <b>chaleco fluorescente</b>.<br>• <b>Protección para los ojos</b>.<br>• Un <b>calzo</b> del tamaño justo para el peso y la rueda.<br>• <b>Dos señales autoportantes</b> que no dependan de la electricidad del camión (por ejemplo, <b>conos</b>).",
       "<b>Extintores:</b> siempre, al menos uno. Camión de 2,5 t: 4 kg de polvo. De 5 t o 10 t: mínimo <b>2 extintores</b>. De 6,5 t: 8 kg de polvo en total. Se revisan (retimbrado) <b>cada 5 años</b>."
     ],
@@ -523,16 +552,35 @@ export const PASOS_ADR_QUIEN = [
     "tipo": "quien",
     "titulo": "Quién hace qué",
     "texto": [
-      "En el viaje de Damian participan varias personas, y cada una tiene su tarea:",
+      "En el viaje de Juan participan varias personas, y cada una tiene su tarea:",
       "• <b>Expedidor:</b> por cuya cuenta se hace el transporte (el dueño del envío). <b>Prepara</b> el transporte, <b>elige y marca los envases</b>, da la información a todos y le dice al cargador el <b>grado de llenado</b> de la cisterna.",
       "• <b>Cargador:</b> el responsable de la <b>carga</b>. No empieza si el camión no tiene <b>calzo</b>, y no lo deja salir hasta ver que <b>no hay fugas</b>.",
       "• <b>Transportista:</b> el que asume hacer el transporte. <b>Elige el camión y el conductor</b>, pone los <b>paneles</b>, revisa las <b>etiquetas</b>, pone los <b>papeles</b> y el <b>equipo</b>. Durante el viaje es el responsable administrativo.",
       "• <b>Destinatario:</b> acepta la mercancía y revisa que después de descargar se cumpla la norma. El <b>descargador</b> hace la carta de porte en vacío.",
-      "• <b>Damian, el conductor:</b> se informa de la materia, <b>lee la carta de porte y las instrucciones antes de cargar</b>, se asegura de que estén a bordo (si no se las dieron, <b>las pide</b>), revisa la cisterna al terminar de cargar y le dice al cargador cuál fue la <b>última mercancía</b>.",
+      "• <b>Juan, el conductor:</b> se informa de la materia, <b>lee la carta de porte y las instrucciones antes de cargar</b>, se asegura de que estén a bordo (si no se las dieron, <b>las pide</b>), revisa la cisterna al terminar de cargar y le dice al cargador cuál fue la <b>última mercancía</b>.",
       "Si no le avisaron que la mercancía era peligrosa, el transportista puede <b>negarse a seguir y descargarla, o devolverla</b>."
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { quimica: ['quimica', 150, { z: 100 }], expedidor: ['expedidor', 310], cargador: ['cargador', 480], juan: ['juan', 640], cisterna: ['cisterna', 830], calzo: ['calzo', 880, { z: 600 }], transportista: ['transportista', 1010], gasolinera: ['gasolinera', 190, { z: 100 }], destinataria: ['destinataria', 400] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('QUIÉN HACE QUÉ')],
+  [0.5, e => { e.mostrar('quimica'); e.mostrar('expedidor'); }],
+  [1.2, e => e.globo('expedidor', 'Soy el EXPEDIDOR: el envío es mío')],
+  [3.2, e => e.etiqueta('expedidor', 'Prepara el envío, elige y marca los envases, informa a todos', 'ok')],
+  [7.0, e => { e.mostrar('cargador'); e.globo('cargador', 'Soy el CARGADOR: yo cargo la cisterna'); }],
+  [8.6, e => { e.flecha('f1', 'expedidor', 'cargador', 'amarilla'); e.etiqueta('ll', 'El expedidor le dice el GRADO DE LLENADO', 'aviso', [395, 150]); }],
+  [11.6, e => { e.etiqueta('ll', null); e.flecha('f1'); e.mostrar('cisterna'); e.mostrar('calzo'); e.brilla('calzo'); }],
+  [12.4, e => e.etiqueta('cargador', 'Sin CALZO no empieza. Si hay FUGAS, no lo deja salir', 'deuda')],
+  [16.0, e => { e.brilla('calzo', false); e.mostrar('transportista'); e.globo('transportista', 'Soy la TRANSPORTISTA: elijo el camión y el conductor'); }],
+  [18.6, e => e.etiqueta('transportista', 'Pone los PANELES, revisa las ETIQUETAS, pone PAPELES y EQUIPO', 'precio')],
+  [22.0, e => { e.mostrar('juan'); e.globo('juan', 'Soy el CONDUCTOR: leo la carta de porte y las instrucciones ANTES de cargar'); }],
+  [25.4, e => e.globo('juan', 'Si me faltan, las pido. Al terminar, reviso la cisterna')],
+  [28.4, e => { e.titulo('LA LLEGADA'); ['quimica', 'expedidor', 'cargador', 'transportista', 'calzo'].forEach(n => e.ocultar(n)); e.globo('juan'); e.mostrar('gasolinera'); e.mostrar('destinataria'); }],
+  [29.4, e => e.globo('destinataria', 'Soy la DESTINATARIA: acepto la carga y reviso que todo quede bien')],
+  [32.6, e => e.etiqueta('av', 'Si no le avisaron que era peligrosa: el transportista puede negarse, descargarla o devolverla', 'aviso', [560, 140])]
+],
     "figura": {
       "anim": "quien",
       "titulo": "Quién hace qué",
@@ -552,6 +600,18 @@ export const PASOS_ADR_QUIEN = [
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { quimica: ['quimica', 150, { z: 100 }], cargador: ['cargador', 370], cisterna: ['cisterna', 660], calzo: ['calzo', 710, { z: 600 }], juan: ['juan', 940] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('CARGANDO LA CISTERNA')],
+  [0.5, e => { ['quimica', 'cargador', 'cisterna', 'calzo', 'juan'].forEach(n => e.mostrar(n)); }],
+  [1.4, e => { e.brilla('calzo'); e.etiqueta('cisterna', 'Bien INMOVILIZADO: calzo y freno de mano', 'ok'); }],
+  [4.8, e => { e.brilla('calzo', false); e.etiqueta('cisterna', 'Lo que quedó adentro tiene que ser COMPATIBLE. Si no, se limpia', 'aviso'); }],
+  [8.6, e => e.globo('juan', 'A una cisterna sin limpiar NO se entra nunca')],
+  [11.4, e => e.etiqueta('cisterna', 'Si dos materias reaccionan, no van en compartimentos pegados', 'deuda')],
+  [15.0, e => { e.globo('juan'); e.etiqueta('cisterna', 'Un solo REMOLQUE. El líquido se mueve: EFECTO OLA', 'deuda'); }],
+  [18.6, e => e.etiqueta('cisterna', 'Comida en una cisterna que llevó peligrosas: solo con medidas para la salud', 'aviso')]
+],
     "figura": {
       "anim": "carga",
       "titulo": "La carga",
