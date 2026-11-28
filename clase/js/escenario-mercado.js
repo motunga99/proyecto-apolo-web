@@ -107,7 +107,18 @@ const CATALOGO = {
   desgLado: { img: 'desg-lado', alto: 280 },
   llantaCorte: { img: 'llanta-corte', alto: 420, sinSombra: true },
   llantaUna: { img: 'llanta-una', alto: 170, sinSombra: true },
-  llantaVarias: { img: 'llanta-varias', alto: 170, sinSombra: true }
+  llantaVarias: { img: 'llanta-varias', alto: 170, sinSombra: true },
+  // ADR: certificado y equipo
+  itv: { img: 'edif-itv', alto: 210 },
+  certAdr: { img: 'certificado-adr', alto: 120, sinSombra: true },
+  cisternaCorte: { img: 'cisterna-rompeolas', alto: 170 },
+  eqLinterna: { img: 'eq-linterna', alto: 34 },
+  eqChaleco: { img: 'eq-chaleco', alto: 110 },
+  eqGafas: { img: 'eq-gafas', alto: 30 },
+  eqCalzo: { img: 'eq-calzo', alto: 60 },
+  eqConos: { img: 'eq-conos', alto: 120 },
+  eqExtintor: { img: 'eq-extintor', alto: 150 },
+  eqV16: { img: 'eq-v16', alto: 45 }
 };
 
 const CSS_BASE = `

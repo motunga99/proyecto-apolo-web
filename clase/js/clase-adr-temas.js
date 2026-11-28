@@ -470,6 +470,21 @@ export const PASOS_ADR_PAPELES = [
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { itv: ['itv', 200, { z: 100 }], inspector: ['inspector', 460], cert: ['certAdr', 610, { abajo: 330, z: 900 }], cisterna: ['cisterna', 830], juan: ['juan', 1050], corte: ['cisternaCorte', 560] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('EL CERTIFICADO DEL CAMIÓN')],
+  [0.5, e => { e.mostrar('itv'); e.mostrar('cisterna'); e.mostrar('juan'); }],
+  [1.2, e => e.globo('juan', 'Traigo la cisterna a revisar')],
+  [3.2, e => { e.mostrar('inspector'); e.globo('inspector', 'Si cumple el ADR, te doy el CERTIFICADO DE APROBACIÓN'); }],
+  [6.0, e => { e.mostrar('cert'); e.etiqueta('cert', 'Dice: matrícula, chasis, dueño, qué materias puede llevar y hasta cuándo vale', 'ok'); }],
+  [10.0, e => { e.etiqueta('cert', null); e.ocultar('cert'); e.volar('certAdr', 'inspector', 'juan'); e.etiqueta('cisterna', 'Lo necesitan las CISTERNAS de más de 1.000 l (contenedor cisterna: más de 3.000 l)', 'precio'); }],
+  [14.0, e => e.etiqueta('ex', 'Revisión TODOS LOS AÑOS · prueba de que no pierde, cada 3 AÑOS', 'grande', [560, 120])],
+  [17.6, e => e.globo('juan', 'Y solo cargo las materias para las que está autorizada')],
+  [20.6, e => { e.titulo('POR DENTRO: LOS ROMPEOLAS'); ['itv', 'inspector', 'cisterna', 'juan'].forEach(n => e.ocultar(n)); e.etiqueta('cisterna', null); e.globo('juan'); e.globo('inspector'); e.etiqueta('ex', null); e.mostrar('corte'); }],
+  [21.6, e => e.etiqueta('corte', 'ROMPEOLAS: paredes de adentro que frenan el líquido. Tapan al menos el 70 %', 'aviso')],
+  [25.2, e => e.etiqueta('ex', 'La placa de la cisterna: número de aprobación y año. Cargada, aguanta 2 VECES su peso hacia adelante', 'grande', [560, 120])]
+],
     "figura": {
       "anim": "certificado",
       "titulo": "El certificado",
@@ -515,10 +530,25 @@ export const PASOS_ADR_PAPELES = [
     "texto": [
       "En el camión de Juan tiene que haber:",
       "• Para <b>cada persona</b>: una <b>linterna</b> y un <b>chaleco fluorescente</b>.<br>• <b>Protección para los ojos</b>.<br>• Un <b>calzo</b> del tamaño justo para el peso y la rueda.<br>• <b>Dos señales autoportantes</b> que no dependan de la electricidad del camión (por ejemplo, <b>conos</b>).",
-      "<b>Extintores:</b> siempre, al menos uno. Camión de 2,5 t: 4 kg de polvo. De 5 t o 10 t: mínimo <b>2 extintores</b>. De 6,5 t: 8 kg de polvo en total. Se revisan (retimbrado) <b>cada 5 años</b>."
+      "<b>Extintores:</b> siempre, al menos uno. Camión de 2,5 t: 4 kg de polvo. De 5 t o 10 t: mínimo <b>2 extintores</b>. De 6,5 t: 8 kg de polvo en total. Se revisan (retimbrado) <b>cada 5 años</b>.",
+      "Y además, como todo camión en España, la <b>baliza V-16</b> (los triángulos ya no valen)."
     ],
     "sim": "quieto",
     "vista": "perspectiva",
+    escena: { juan: ['juan', 120], cisterna: ['cisterna', 870, { z: 50 }], linterna: ['eqLinterna', 270], chaleco: ['eqChaleco', 360], gafas: ['eqGafas', 460], calzo: ['eqCalzo', 550], conos: ['eqConos', 650], extintor: ['eqExtintor', 760], v16: ['eqV16', 1040] },
+    base: [],
+    linea: [
+  [0.2, e => e.titulo('EL EQUIPO DEL CAMIÓN')],
+  [0.5, e => { e.mostrar('juan'); e.mostrar('cisterna'); }],
+  [1.2, e => e.globo('juan', '¿Qué tengo que llevar en el camión?')],
+  [3.2, e => { e.mostrar('linterna'); e.mostrar('chaleco'); e.etiqueta('chaleco', 'Para CADA PERSONA: una LINTERNA y un CHALECO fluorescente', 'ok'); }],
+  [6.8, e => { e.etiqueta('chaleco', null); e.mostrar('gafas'); e.etiqueta('gafas', 'PROTECCIÓN para los OJOS', 'ok'); }],
+  [9.6, e => { e.etiqueta('gafas', null); e.mostrar('calzo'); e.etiqueta('calzo', 'Un CALZO del tamaño justo para el peso y la rueda', 'ok'); }],
+  [12.8, e => { e.etiqueta('calzo', null); e.mostrar('conos'); e.etiqueta('conos', '2 SEÑALES AUTOPORTANTES, sin electricidad: por ejemplo, CONOS', 'aviso'); }],
+  [16.4, e => { e.etiqueta('conos', null); e.mostrar('extintor'); e.brilla('extintor', true, 'rojo'); e.etiqueta('extintor', 'EXTINTORES: siempre. De 5 t o 10 t: mínimo 2. Revisión cada 5 AÑOS', 'deuda'); }],
+  [20.4, e => { e.brilla('extintor', false, 'rojo'); e.globo('juan', 'Camión de 2,5 t: 4 kg de polvo. De 6,5 t: 8 kg en total'); }],
+  [23.8, e => { e.etiqueta('extintor', null); e.mostrar('v16'); e.etiqueta('v16', 'Y además la baliza V-16, como todo camión', 'precio'); }]
+],
     "figura": {
       "anim": "equipo",
       "titulo": "El equipo",
