@@ -1,5 +1,5 @@
 // ==========================================
-// ESCENARIO DE MERCADO DEL TRANSPORTE (2D, con ilustraciones)
+// ESCENARIO CON ILUSTRACIONES (2D): lo usan Mercado del transporte y Laboral
 // Igual que el de Sociedades: muñequitos, camiones y edificios sobre fondo oscuro.
 // Cada paso arma su propia escena: dónde va cada cosa.
 // Después, la "línea" del paso va mostrando, moviendo y haciendo hablar a cada uno.
@@ -52,7 +52,7 @@ const CATALOGO = {
   monedas: { img: 'monedas', alto: 90 },
   papel: { img: 'carta-porte', alto: 90, sinSombra: true },
   factura: { img: 'factura', alto: 90, sinSombra: true },
-  poliza: { img: 'certificado', alto: 90, sinSombra: true },
+  poliza: { img: 'bilateral', alto: 90, sinSombra: true },
   laudo: { img: 'escritura', alto: 90, sinSombra: true },
   carpeta: { img: 'carpeta', alto: 80, sinSombra: true },
   escudo: { img: 'escudo', alto: 150, sinSombra: true },
@@ -60,7 +60,24 @@ const CATALOGO = {
   mazo: { img: 'mazo', alto: 70 },
   reloj: { img: 'reloj', alto: 150, sinSombra: true },
   palets: { img: 'palets', alto: 110 },
-  surtidor: { img: 'surtidor', alto: 170 }
+  surtidor: { img: 'surtidor', alto: 170 },
+  // tema laboral
+  laura: { img: 'medica', alto: 300, cara: 1 },
+  juanHerido: { img: 'juan-vendado', alto: 300, cara: 1 },
+  dolorEspalda: { img: 'dolor-espalda', alto: 300, cara: 1 },
+  manolo: { img: 'dolor-pecho', alto: 300, cara: 1 },
+  levantaBien: { img: 'levanta-bien', alto: 290, cara: 1 },
+  levantaMal: { img: 'levanta-mal', alto: 280, cara: 1 },
+  maniqui: { img: 'maniqui-epi', alto: 300 },
+  toro: { img: 'toro', alto: 170 },
+  cabina: { img: 'cabina', alto: 300 },
+  caja: { img: 'caja-carton', alto: 80 },
+  crema: { img: 'crema', alto: 70 },
+  bidon: { img: 'bidon-quimico', alto: 150 },
+  ambulancia: { img: 'ambulancia', alto: 120 },
+  tarjetaCap: { img: 'tarjeta-cap', alto: 80, sinSombra: true },
+  casa: { img: 'casa', alto: 190 },
+  auto: { img: 'auto', alto: 80 }
 };
 
 const CSS = `
@@ -174,7 +191,11 @@ export function crearEscenarioMercado() {
     if (!el) return;
     if (inmediato) el.classList.add('ya');
     el.classList.toggle('ve', siNo);
-    if (!siNo) el.classList.remove('chau', 'brilla', 'rojo');
+    if (!siNo) {
+      el.classList.remove('chau', 'brilla', 'rojo');
+      // si se va, se lleva su cartel y su globito
+      [id, 'g:' + id].forEach(k => { if (etiquetas[k]) { etiquetas[k].remove(); delete etiquetas[k]; } });
+    }
     if (inmediato) { void el.offsetWidth; el.classList.remove('ya'); }
   }
   const mostrar = (id, siNo = true) => ver(id, siNo);

@@ -599,6 +599,17 @@
     }
     .clase-tipo.autonomo { background: #059669; }
     .clase-tipo.sa { background: #4f46e5; }
+    .clase-tipo.prevencion { background: #16a34a; }
+    .clase-tipo.accidente { background: #b91c1c; }
+    .clase-tipo.riesgos { background: #ea580c; }
+    .clase-tipo.epi { background: #7c3aed; }
+    .clase-tipo.clases { background: #0891b2; }
+    .clase-tipo.sector { background: #16a34a; }
+    .clase-tipo.empresa { background: #2563eb; }
+    .clase-tipo.interm { background: #ca8a04; }
+    .clase-tipo.contrato { background: #4f46e5; }
+    .clase-tipo.seguros { background: #b91c1c; }
+    .clase-tipo.juntas { background: #7c3aed; }
     #clase-barra { width: 100%; height: auto; display: none; margin: 4px 0 6px; }
 
     /* Capítulos: una sociedad por botón */
@@ -622,96 +633,10 @@
     .badge-dif { background: #ea580c; }
     .badge-dif.slne { background: #c2410c; }
     .badge-igual { background: #0284c7; }
-
-    /* ---------- CARPETA DE LA CABINA ---------- */
-    #carpeta { position: fixed; right: 16px; top: 112px; z-index: 14; width: 290px; max-height: calc(100vh - 140px); overflow-y: auto; }
-    .carpeta-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; cursor: move; }
-    .carpeta-cabecera span { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #22D3EE; }
-    #carpeta.achicada #carpeta-lista { display: none; }
-    .carpeta-vacia { margin: 0; font-size: 14px; color: #94A3B8; }
-    .doc { border-radius: 14px; padding: 9px 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
-    .doc b { display: block; color: #FFFFFF; font-size: 14px; }
-    .doc span { display: block; color: #CBD5E1; font-size: 12.5px; margin-top: 2px; }
-    .doc.verde { border-left: 5px solid #34F5A0; }
-    .doc.azul { border-left: 5px solid #38BDF8; }
-    .doc.rojo { border-left: 5px solid #FF6B6B; }
-    .doc.nuevo { animation: docLuz 1.8s ease-out; }
-    @keyframes docLuz {
-      0% { box-shadow: 0 0 0 0 rgba(52,245,160,0); background: rgba(52,245,160,0.25); }
-      30% { box-shadow: 0 0 0 4px rgba(52,245,160,0.45), 0 0 26px rgba(52,245,160,0.5); }
-      100% { box-shadow: none; background: rgba(255,255,255,0.04); }
-    }
-    .clase-tipo.nacional { background: #16a34a; }
-    .clase-tipo.publico { background: #0284c7; }
-    .clase-tipo.privado { background: #ea580c; }
-    .clase-tipo.exento { background: #7c3aed; }
-    .clase-tipo.autorizacion { background: #15803d; }
-    .clase-tipo.control { background: #b45309; }
-    .clase-tipo.inspector { background: #1e3a8a; }
-    @media (max-width: 900px) { #carpeta { top: auto; bottom: 16px; width: 240px; } }
-
-    /* ---------- FIGURA (dibujos de Gemini) ---------- */
-    #figura { position: fixed; right: 16px; top: 92px; z-index: 14; width: 300px; display: flex; gap: 12px; align-items: center; }
-    #figura img { width: 110px; height: 100px; object-fit: contain; flex: none; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); }
-    #figura b { display: block; color: #fff; font: 900 15px 'Nunito', sans-serif; margin-bottom: 4px; }
-    #figura span { display: block; color: #cbd5e1; font-size: 13px; line-height: 1.35; }
-    #figura.aparece { animation: docLuz 1.8s ease-out; }
-    /* ---------- CABINA ---------- */
-    #cabina { position: fixed; right: 16px; bottom: 16px; z-index: 14; width: 300px; }
-    .cabina-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; cursor: move; }
-    .cabina-cabecera span { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #22D3EE; }
-    #cabina.achicada .cabina-cuerpo { display: none; }
-    .tablero { position: relative; }
-    .tablero img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); }
-    .tablero i { position: absolute; top: 49.8%; width: 4.4%; height: 4.6%; transform: translate(-50%, -50%); border-radius: 4px; background: #f59e0b; opacity: 0.15; transition: opacity 0.15s linear; }
-    .tablero i.on { box-shadow: 0 0 10px 3px rgba(245, 158, 11, 0.85); }
-    .cabina-testigo { margin: 4px 0 2px; text-align: center; font: 800 13px 'Nunito', sans-serif; color: #fbbf24; min-height: 18px; }
-    .cabina-medidas { width: 100%; height: auto; display: block; }
-    .termo-txt { font: 700 12px 'Nunito', sans-serif; color: #cbd5e1; margin-top: 4px; }
-    .termo { height: 12px; border-radius: 6px; background: #1e293b; overflow: hidden; margin-top: 3px; }
-    #cab-termo { height: 100%; width: 0; transition: width 0.2s linear; }
-    .clase-tipo.motor { background: #b45309; }
-    .clase-tipo.atp { background: #0891b2; }
-    .clase-tipo.adr { background: #ea580c; }
-    .clase-tipo.empresa { background: #2563eb; }
-    .clase-tipo.prevencion { background: #16a34a; }
-    .clase-tipo.accidente { background: #b91c1c; }
-    .clase-tipo.riesgos { background: #ea580c; }
-    .clase-tipo.epi { background: #7c3aed; }
-    .clase-tipo.clases1 { background: #dc2626; }
-    .clase-tipo.clases2 { background: #ca8a04; }
-    .clase-tipo.panel { background: #f97316; }
-    .clase-tipo.etiq { background: #be123c; }
-    .clase-tipo.papeles { background: #2563eb; }
-    .clase-tipo.quien { background: #7c3aed; }
-    .clase-tipo.ruta { background: #16a34a; }
-    .clase-tipo.acc { background: #b91c1c; }
-    .clase-tipo.tipos { background: #2563eb; }
-    .clase-tipo.siglas { background: #7c3aed; }
-    .clase-tipo.alimentacion { background: #0891b2; }
-    .clase-tipo.curvas { background: #16a34a; }
-    .clase-tipo.transmision { background: #7c3aed; }
-    .clase-tipo.consumo { background: #059669; }
-    .clase-tipo.mantenimiento { background: #2563eb; }
-    .clase-tipo.contaminacion { background: #475569; }
-    #figura.con-anim { flex-direction: column; width: 340px; align-items: stretch; }
-    #figura-anim { width: 100%; }
-    .cab-fila { display: flex; gap: 10px; align-items: center; }
-    #escenario { position: fixed; inset: 0; z-index: 7; display: none; background: radial-gradient(circle at 62% 42%, #1e293b 0%, #0b1220 62%, #05080e 100%); }
-    body.en-escenario #escenario { display: block; }
-    body.en-escenario #cabina, body.en-escenario #figura, body.en-escenario #etiquetas, body.en-escenario .botones { display: none !important; }
-    #esc-caja { position: absolute; left: 470px; right: 32px; top: 100px; bottom: 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
-    #esc-anim { width: min(820px, 100%); }
-    #esc-anim svg { width: 100%; height: auto; max-height: 68vh; display: block; border-radius: 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(34,211,238,0.15); }
-    #esc-img { max-width: min(560px, 90%); max-height: 56vh; object-fit: contain; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.6)); }
-    #esc-titulo { color: #fff; font: 900 26px 'Nunito', sans-serif; text-align: center; }
-    #esc-texto { color: #cbd5e1; font-size: 16px; line-height: 1.45; text-align: center; max-width: 760px; }
-    #esc-caja.aparece { animation: docLuz 1.8s ease-out; }
-    #esc-anim { width: min(820px, 100%, calc((100vh - 230px) * 1.23)); }
-    @media (max-width: 900px) { #esc-caja { left: 16px; right: 16px; top: 90px; bottom: auto; height: 45vh; } #esc-titulo { font-size: 18px; } #esc-texto { font-size: 13px; } }
-    @media (max-width: 1100px) { #figura.con-anim { width: 280px; } }
-    @media (max-width: 1100px) { #figura { top: auto; bottom: 330px; } #cabina { transform: scale(0.8); transform-origin: bottom right; } }
-  </style>
+      /* ---------- SIN 3D: fondo oscuro para el escenario con ilustraciones ---------- */
+    body { background: radial-gradient(ellipse at 60% 40%, #13213a 0%, #0a1222 55%, #050a14 100%) !important; }
+    .panel-cabina, #carpeta { display: none !important; }
+</style>
   <script type="importmap">
     {
       "imports": {
@@ -725,27 +650,19 @@
   <link rel="stylesheet" href="css/apolo.css">
 </head>
 <body class="modo-clase clase-camion">
-  <div id="lienzo"></div>
   <div id="etiquetas"></div>
-  <!-- Fondo oscuro con la animación grande, cuando el camión no hace falta -->
-  <div id="escenario"><div id="esc-caja"><div id="esc-anim"></div><img id="esc-img" alt="" style="display:none"><div id="esc-titulo"></div><div id="esc-texto"></div></div></div>
 
   <!-- Barra superior -->
   <header class="barra">
     <div class="tarjeta titulo">
       <div class="logo">CAP</div>
       <div>
-        <h1>Laboral · Mercancías</h1>
-        <p>Arrastrá para girar · rueda del mouse o dos dedos para zoom</p>
+        <h1>Laboral</h1>
+        <p>Trabajo y prevención de riesgos</p>
       </div>
     </div>
     <div class="tarjeta botones">
-      <button class="boton activo" data-vista="perspectiva">Perspectiva</button>
-      <button class="boton" data-vista="arriba">Arriba</button>
-      <button class="boton" data-vista="costado">Costado</button>
-      <button class="boton" data-vista="ruedas">Ruedas</button>
-      <div class="separador"></div>
-      <button class="boton" id="boton-noche">Noche</button>
+      <button class="boton activo" data-vista="general">Todo</button>
     </div>
   </header>
 
@@ -780,43 +697,6 @@
       <button class="boton" id="clase-repetir">Repetir</button>
       <button class="boton principal" id="clase-volver" style="display:none">Volver a la pregunta</button>
       <button class="boton principal" id="clase-siguiente">Siguiente</button>
-    </div>
-  </div>
-
-  <!-- Dibujo que acompaña el paso (frenos, asiento, airbag...) -->
-  <div id="figura" class="tarjeta" style="display:none">
-    <img id="figura-img" alt="">
-    <div id="figura-anim" style="display:none"></div>
-    <div><b id="figura-titulo"></b><span id="figura-texto"></span></div>
-  </div>
-
-  <!-- Cabina: cuentarrevoluciones con la zona verde, marcha, velocidad y consumo -->
-  <div id="cabina" class="tarjeta">
-    <div class="cabina-cabecera"><span>Cabina del camión A</span><button class="btn-achicar" id="cabina-achicar" title="Achicar">–</button></div>
-    <div class="cabina-cuerpo">
-      <svg viewBox="0 0 280 150" class="cabina-medidas">
-        <circle cx="70" cy="72" r="62" fill="#0b1220" stroke="#1e293b" stroke-width="3"/>
-        <path id="cab-arco" fill="none" stroke="#334155" stroke-width="9"/>
-        <path id="cab-verde" fill="none" stroke="#22c55e" stroke-width="9"/>
-        <path id="cab-roja" fill="none" stroke="#ef4444" stroke-width="9"/>
-        <g id="cab-marcas"></g>
-        <line id="cab-rpm-aguja" x1="70" y1="72" x2="70" y2="28" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" transform="rotate(-135 70 72)"/>
-        <circle cx="70" cy="72" r="6" fill="#f97316"/>
-        <text x="70" y="104" text-anchor="middle" font-size="9" fill="#94a3b8">× 1000 vueltas/min</text>
-        <text id="cab-rpm" x="70" y="122" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">600</text>
-        <text x="70" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">vueltas por minuto</text>
-        <text x="160" y="20" font-size="10" fill="#94a3b8">Marcha</text>
-        <text id="cab-marcha" x="160" y="52" font-size="30" font-weight="900" fill="#fbbf24">N</text>
-        <text x="214" y="20" font-size="10" fill="#94a3b8">km/h</text>
-        <text id="cab-kmh" x="214" y="52" font-size="26" font-weight="900" fill="#fff">0</text>
-        <text x="160" y="80" font-size="10" fill="#94a3b8">Consumo ahora</text>
-        <rect x="160" y="86" width="110" height="12" rx="6" fill="#1e293b"/>
-        <rect id="cab-consumo-bar" x="160" y="86" width="0" height="12" rx="6" fill="#22c55e"/>
-        <text id="cab-consumo" x="160" y="114" font-size="13" font-weight="800" fill="#fff">0 L/100 km</text>
-        <text x="160" y="132" font-size="10" fill="#94a3b8">Gastado:</text>
-        <text id="cab-litros" x="208" y="132" font-size="12" font-weight="800" fill="#fbbf24">0,00 L</text>
-      </svg>
-      <div class="cabina-testigo" id="cab-testigo">Motor al ralentí</div>
     </div>
   </div>
 
