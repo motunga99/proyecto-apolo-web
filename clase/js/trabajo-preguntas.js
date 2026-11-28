@@ -36,7 +36,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 2,
   "veces": 9,
-  "explicacion": "<b>Tiempo de presencia</b> = Damian está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
+  "explicacion": "<b>Tiempo de presencia</b> = Juan está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
   "paso": 1
  },
  {
@@ -49,7 +49,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 2,
   "veces": 2,
-  "explicacion": "<b>Tiempo de presencia</b> = Damian está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
+  "explicacion": "<b>Tiempo de presencia</b> = Juan está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
   "paso": 1
  },
  {
@@ -62,7 +62,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 2,
   "veces": 1,
-  "explicacion": "<b>Tiempo de presencia</b> = Damian está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
+  "explicacion": "<b>Tiempo de presencia</b> = Juan está <b>a disposición del jefe pero sin trabajar</b>: por ejemplo, esperando que lo carguen.",
   "paso": 1
  },
  {
@@ -75,7 +75,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 0,
   "veces": 6,
-  "explicacion": "Si Damian trabaja para <b>varias empresas</b>, le pasa a cada jefe las horas trabajadas en las otras <b>por escrito</b>.",
+  "explicacion": "Si Juan trabaja para <b>varias empresas</b>, le pasa a cada jefe las horas trabajadas en las otras <b>por escrito</b>.",
   "paso": 2
  },
  {
@@ -88,7 +88,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 0,
   "veces": 2,
-  "explicacion": "Si Damian trabaja para <b>varias empresas</b>, le pasa a cada jefe las horas trabajadas en las otras <b>por escrito</b>.",
+  "explicacion": "Si Juan trabaja para <b>varias empresas</b>, le pasa a cada jefe las horas trabajadas en las otras <b>por escrito</b>.",
   "paso": 2
  },
  {
@@ -166,7 +166,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 2,
   "veces": 3,
-  "explicacion": "En una inspección, Damian <b>da los papeles que le pidan</b>: ahí actúa <b>como representante de la empresa</b>.",
+  "explicacion": "En una inspección, Juan <b>da los papeles que le pidan</b>: ahí actúa <b>como representante de la empresa</b>.",
   "paso": 3
  },
  {
@@ -179,7 +179,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 2,
   "veces": 2,
-  "explicacion": "En una inspección, Damian <b>da los papeles que le pidan</b>: ahí actúa <b>como representante de la empresa</b>.",
+  "explicacion": "En una inspección, Juan <b>da los papeles que le pidan</b>: ahí actúa <b>como representante de la empresa</b>.",
   "paso": 3
  },
  {
@@ -270,7 +270,7 @@ export const PREGUNTAS_TRABAJO_EMPRESA = [
   ],
   "correcta": 3,
   "veces": 2,
-  "explicacion": "Damian siempre lleva su <b>tarjeta de cualificación profesional</b> (la tarjeta CAP).",
+  "explicacion": "Juan siempre lleva su <b>tarjeta de cualificación profesional</b> (la tarjeta CAP).",
   "paso": 3
  }
 ];
@@ -768,7 +768,7 @@ export const PREGUNTAS_TRABAJO_ACC = [
   ],
   "correcta": 3,
   "veces": 14,
-  "explicacion": "Si Damian ya tenía una enfermedad y el accidente la empeora, eso también <b>es accidente de trabajo</b>.",
+  "explicacion": "Si Juan ya tenía una enfermedad y el accidente la empeora, eso también <b>es accidente de trabajo</b>.",
   "paso": 1
  },
  {

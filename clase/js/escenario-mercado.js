@@ -89,7 +89,22 @@ const CATALOGO = {
   instrucciones: { img: 'instrucciones', alto: 110, sinSombra: true },
   calzo: { img: 'calzo', alto: 50 },
   dni: { img: 'licencia', alto: 80, sinSombra: true },
-  autorizacion: { img: 'certificado', alto: 80, sinSombra: true }
+  autorizacion: { img: 'certificado', alto: 80, sinSombra: true },
+  // Neumáticos: el taller de Pedro
+  rueda: { img: 'rueda', alto: 250 },
+  llantaAcero: { img: 'llanta-acero', alto: 220 },
+  llantaAleacion: { img: 'llanta-aleacion', alto: 220 },
+  camara: { img: 'camara', alto: 150 },
+  corte: { img: 'rueda-corte', alto: 300 },
+  flanco: { img: 'flanco', alto: 210, sinSombra: true },
+  manometro: { img: 'manometro', alto: 200 },
+  desinflada: { img: 'rueda-desinflada', alto: 190 },
+  reventada: { img: 'rueda-reventada', alto: 250 },
+  bordillo: { img: 'rueda-bordillo', alto: 190 },
+  charco: { img: 'charco', alto: 95, sinSombra: true },
+  desgBordes: { img: 'desg-bordes', alto: 280 },
+  desgCentro: { img: 'desg-centro', alto: 280 },
+  desgLado: { img: 'desg-lado', alto: 280 }
 };
 
 const CSS_BASE = `

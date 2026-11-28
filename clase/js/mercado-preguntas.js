@@ -10,7 +10,7 @@ export const PREGUNTAS_MERCADO_CLASES = [
   ],
   "correcta": 1,
   "veces": 23,
-  "explicacion": "Cuenta ajena = Damian <b>lleva la carga de otros</b> y le pagan por eso (servicio a terceros).",
+  "explicacion": "Cuenta ajena = Juan <b>lleva la carga de otros</b> y le pagan por eso (servicio a terceros).",
   "paso": 1
  },
  {
@@ -1121,7 +1121,7 @@ export const PREGUNTAS_MERCADO_INTERM = [
   ],
   "correcta": 3,
   "veces": 6,
-  "explicacion": "Si Damian contrata con el cliente y le pasa el viaje a otro, frente al cliente responde <b>como transportista</b>.",
+  "explicacion": "Si Juan contrata con el cliente y le pasa el viaje a otro, frente al cliente responde <b>como transportista</b>.",
   "paso": 3
  },
  {
@@ -1160,7 +1160,7 @@ export const PREGUNTAS_MERCADO_INTERM = [
   ],
   "correcta": 0,
   "veces": 11,
-  "explicacion": "Frente al compañero que hace el viaje (el colaborador), Damian responde <b>como cargador</b>.",
+  "explicacion": "Frente al compañero que hace el viaje (el colaborador), Juan responde <b>como cargador</b>.",
   "paso": 3
  },
  {
@@ -1305,7 +1305,7 @@ export const PREGUNTAS_MERCADO_CONTRATO = [
   ],
   "correcta": 0,
   "veces": 17,
-  "explicacion": "Lo que Damian <b>no</b> necesita saber: <b>para qué</b> van a usar la mercancía.",
+  "explicacion": "Lo que Juan <b>no</b> necesita saber: <b>para qué</b> van a usar la mercancía.",
   "paso": 1
  },
  {
@@ -1344,7 +1344,7 @@ export const PREGUNTAS_MERCADO_CONTRATO = [
   ],
   "correcta": 2,
   "veces": 10,
-  "explicacion": "Damian sigue <b>el itinerario que le fijaron</b>.",
+  "explicacion": "Juan sigue <b>el itinerario que le fijaron</b>.",
   "paso": 1
  },
  {
