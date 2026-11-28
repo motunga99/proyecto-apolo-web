@@ -96,7 +96,7 @@ const CATALOGO = {
   llantaAleacion: { img: 'llanta-aleacion', alto: 220 },
   camara: { img: 'camara', alto: 150 },
   corte: { img: 'rueda-corte', alto: 300 },
-  flanco: { img: 'flanco', alto: 210, sinSombra: true },
+  flanco: { img: 'flanco-texto', alto: 300, sinSombra: true },
   manometro: { img: 'manometro', alto: 200 },
   desinflada: { img: 'rueda-desinflada', alto: 190 },
   reventada: { img: 'rueda-reventada', alto: 250 },
@@ -104,7 +104,10 @@ const CATALOGO = {
   charco: { img: 'charco', alto: 95, sinSombra: true },
   desgBordes: { img: 'desg-bordes', alto: 280 },
   desgCentro: { img: 'desg-centro', alto: 280 },
-  desgLado: { img: 'desg-lado', alto: 280 }
+  desgLado: { img: 'desg-lado', alto: 280 },
+  llantaCorte: { img: 'llanta-corte', alto: 420, sinSombra: true },
+  llantaUna: { img: 'llanta-una', alto: 170, sinSombra: true },
+  llantaVarias: { img: 'llanta-varias', alto: 170, sinSombra: true }
 };
 
 const CSS_BASE = `

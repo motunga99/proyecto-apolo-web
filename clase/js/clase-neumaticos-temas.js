@@ -37,11 +37,10 @@ export const PASOS_NEU_RUEDA = [
     tipo: 'rueda',
     titulo: "La llanta: de acero o de aleación",
     texto: [
-      "La <b>llanta</b> es el aro de metal donde va montada la goma. Por los costados tiene unas <b>pestañas</b>: ahí se <b>sujeta el talón</b> de la cubierta.",
-      "La de <b>acero</b> tiene <b>agujeros</b> alrededor: dejan pasar el aire para <b>enfriar los frenos</b>.",
-      "La de <b>aleación</b> (aluminio): <b>pesa menos</b> (el camión vacío pesa menos) y es de <b>una sola pieza</b>. Lo malo: se <b>corroe</b> más (<b>corrosión electrolítica</b>). Hay que lavarla, sobre todo si anduviste <b>cerca del mar</b>.",
-      "<b>Cómo se lee una llanta: 12,5 J x 22.5</b><br>• <b>12,5</b> = el <b>ancho</b>, en pulgadas.<br>• <b>J</b> = la <b>forma de la pestaña</b>.<br>• <b>x</b> = de <b>una sola pieza</b> (si hay un <b>guion \"-\"</b>, es de varias piezas).<br>• <b>22.5</b> = el <b>diámetro</b>, en pulgadas.",
-      "<b>Equilibrar</b> = poner <b>contrapesos de plomo en la llanta</b> para que el peso quede parejo. Se desequilibra al cambiar la goma, si se cae un contrapeso o si se abolla la llanta. Se nota porque el <b>volante vibra</b>."
+      "La <b>llanta</b> es el <b>aro de metal</b> de la rueda: la cubierta (la goma) va montada alrededor de ella.",
+      "La de <b>acero</b> es la de siempre. Tiene <b>agujeros</b> alrededor: por ahí pasa el aire y <b>enfría los frenos</b>, que están justo detrás.",
+      "La de <b>aleación</b> (aluminio) <b>pesa menos</b>, así que el camión vacío pesa menos. Está hecha de <b>una sola pieza</b>. Lo malo: se <b>corroe</b> más (se le hace una especie de óxido que se llama <b>corrosión electrolítica</b>). Hay que lavarla, sobre todo si anduviste <b>cerca del mar</b>, por la sal.",
+      "<b>Equilibrar</b> la rueda = pegarle a la llanta unos <b>contrapesos de plomo</b> chiquitos para que el peso quede parejo en toda la vuelta. Si no está equilibrada, el <b>volante vibra</b>. Se desequilibra al cambiar la goma, si se cae un contrapeso o si se abolla la llanta."
     ],
     escena: { pedro: ['pedro', 140], acero: ['llantaAcero', 450], aleacion: ['llantaAleacion', 820] },
     base: [],
@@ -49,15 +48,39 @@ export const PASOS_NEU_RUEDA = [
     linea: [
   [0.2, e => e.titulo('LA LLANTA')],
   [0.5, e => { e.mostrar('pedro'); e.mostrar('acero'); }],
-  [1.0, e => e.globo('pedro', 'Esta es de ACERO, la de siempre')],
-  [3.0, e => { e.brilla('acero'); e.etiqueta('acero', 'Los AGUJEROS: dejan pasar aire y ENFRÍAN LOS FRENOS', 'ok'); }],
-  [6.2, e => { e.brilla('acero', false); e.mostrar('aleacion'); e.etiqueta('aleacion', 'ALEACIÓN: pesa MENOS y es de UNA SOLA PIEZA', 'ok'); }],
-  [9.2, e => { e.brilla('aleacion', true, 'rojo'); e.etiqueta('aleacion', 'Lo malo: se CORROE. Lavala, sobre todo cerca del MAR', 'deuda'); }],
-  [12.4, e => { e.brilla('aleacion', false, 'rojo'); e.titulo('CÓMO SE LEE UNA LLANTA'); e.etiqueta('aleacion', null); e.etiqueta('acero', null); e.etiqueta('ll', '<b style="color:#fbbf24">12,5</b> J x 22.5<br><small>12,5 = el ANCHO, en pulgadas</small>', 'grande', [640, 170]); }],
-  [15.2, e => e.etiqueta('ll', '12,5 <b style="color:#fbbf24">J</b> x 22.5<br><small>J = la forma de la PESTAÑA (la que sujeta el talón)</small>', 'grande', [640, 170])],
-  [18.0, e => e.etiqueta('ll', '12,5 J <b style="color:#fbbf24">x</b> 22.5<br><small>x = de UNA SOLA PIEZA (un guion "-" = varias piezas)</small>', 'grande', [640, 170])],
-  [20.8, e => e.etiqueta('ll', '12,5 J x <b style="color:#fbbf24">22.5</b><br><small>22.5 = el DIÁMETRO, en pulgadas</small>', 'grande', [640, 170])],
-  [23.6, e => { e.brilla('acero'); e.globo('pedro', 'EQUILIBRAR: pongo contrapesos de plomo en la llanta. Si falta, el volante VIBRA'); }]
+  [1.0, e => e.globo('pedro', 'La LLANTA es el aro de metal. Esta es de ACERO')],
+  [3.4, e => { e.brilla('acero'); e.etiqueta('acero', 'Los AGUJEROS: dejan pasar aire y ENFRÍAN LOS FRENOS', 'ok'); }],
+  [6.6, e => { e.brilla('acero', false); e.mostrar('aleacion'); e.etiqueta('aleacion', 'ALEACIÓN: pesa MENOS y es de UNA SOLA PIEZA', 'ok'); }],
+  [9.6, e => { e.brilla('aleacion', true, 'rojo'); e.etiqueta('aleacion', 'Lo malo: se CORROE. Lavala, sobre todo cerca del MAR', 'deuda'); }],
+  [12.8, e => { e.brilla('aleacion', false, 'rojo'); e.brilla('acero'); e.globo('pedro', 'EQUILIBRAR: le pego contrapesos de plomo a la llanta. Si no, el volante VIBRA'); }]
+]
+  },
+  {
+    tipo: 'rueda',
+    titulo: "Cómo se lee una llanta (desde cero)",
+    texto: [
+      "Imaginá que <b>cortás la rueda por la mitad</b> y la mirás de costado, como en el dibujo. Arriba está la goma; abajo, la llanta.",
+      "La llanta tiene forma de <b>U muy ancha</b>. Los dos <b>bordes que suben</b> a los costados (en <b>amarillo</b>) se llaman <b>pestañas</b>. Contra ellas se apoya el <b>talón</b>, que es el borde de la goma (con su aro de metal adentro). La pestaña es como una <b>pared</b>: no deja que la goma <b>se salga</b> de la llanta.",
+      "En la llanta viene grabado un código, por ejemplo <b>12,5 J x 22.5</b>. Se lee de a pedazos:",
+      "• <b>12,5</b> = el <b>ancho</b> de la llanta, de pestaña a pestaña, en <b>pulgadas</b> (1 pulgada = 2,54 cm).",
+      "• <b>J</b> = la <b>forma de la pestaña</b>. Las pestañas no son todas iguales: unas más altas, otras más curvas. Cada forma tiene <b>una letra</b>, y la <b>J</b> es una de esas formas. Así se sabe qué goma le va bien.",
+      "• <b>x</b> = la llanta es de <b>una sola pieza</b>: todo el aro es un solo metal (también se dice <b>monopieza</b>).<br>• Si en vez de la x hay un <b>guion (-)</b>, es de <b>varias piezas</b>: una de las pestañas es un <b>aro suelto</b> (en naranja) que se saca para meter la goma y después se vuelve a poner. Lo llevaban los camiones antiguos.",
+      "• <b>22.5</b> = el <b>diámetro</b>: lo que mide la llanta de punta a punta, en <b>pulgadas</b>. Es el mismo número que trae la goma (315/80 R <b>22.5</b>): tienen que coincidir para que la goma entre."
+    ],
+    escena: { corte: ['llantaCorte', 380, { abajo: 560 }], una: ['llantaUna', 290, { abajo: 540 }], varias: ['llantaVarias', 830, { abajo: 540 }] },
+    base: [],
+    vista: 'general',
+    linea: [
+  [0.2, e => e.titulo('LA RUEDA CORTADA POR LA MITAD')],
+  [0.5, e => e.mostrar('corte')],
+  [1.4, e => e.etiqueta('g', 'Arriba: la GOMA (cubierta). Abajo: la LLANTA (metal)', 'ok', [870, 200])],
+  [4.6, e => { e.etiqueta('g', 'Lo AMARILLO son las PESTAÑAS: los bordes de la llanta que suben', 'aviso', [870, 200]); e.etiqueta('pe1', 'PESTAÑA', 'aviso', [175, 375]); e.etiqueta('pe2', 'PESTAÑA', 'aviso', [600, 375]); }],
+  [8.0, e => e.etiqueta('g', 'Contra la pestaña se apoya el TALÓN de la goma. La pestaña no deja que la goma se SALGA', 'aviso', [870, 200])],
+  [12.0, e => { e.etiqueta('g', null); e.etiqueta('pe1', null); e.etiqueta('pe2', null); e.titulo('EL CÓDIGO DE LA LLANTA'); e.etiqueta('ll', '<b style="color:#fbbf24">12,5</b> J x 22.5<br><small>12,5 = el ANCHO, de pestaña a pestaña, en pulgadas</small>', 'grande', [870, 200]); }],
+  [15.6, e => e.etiqueta('ll', '12,5 <b style="color:#fbbf24">J</b> x 22.5<br><small>J = la FORMA de la pestaña (cada forma tiene su letra)</small>', 'grande', [870, 200])],
+  [19.2, e => e.etiqueta('ll', '12,5 J x <b style="color:#fbbf24">22.5</b><br><small>22.5 = el DIÁMETRO, en pulgadas (igual que en la goma)</small>', 'grande', [870, 200])],
+  [22.8, e => { e.ocultar('corte'); e.titulo('¿Y LA x?'); e.mostrar('una'); e.etiqueta('una', 'x = UNA SOLA PIEZA: todo el aro es un metal', 'ok'); e.etiqueta('ll', '12,5 J <b style="color:#fbbf24">x</b> 22.5', 'grande', [560, 140]); }],
+  [26.4, e => { e.mostrar('varias'); e.etiqueta('varias', 'guion (-) = VARIAS PIEZAS: este aro naranja se SACA para meter la goma', 'aviso'); e.etiqueta('ll', '12,5 J <b style="color:#fbbf24">-</b> 22.5', 'grande', [560, 140]); }]
 ]
   },
   {
@@ -152,10 +175,10 @@ export const PASOS_NEU_MEDIDAS = [
   [0.5, e => { e.mostrar('juan'); e.mostrar('flanco'); }],
   [1.0, e => e.globo('juan', '¿Y estos números qué quieren decir?')],
   [3.2, e => e.etiqueta('cod', '<span style="white-space:nowrap">315 / 80 R 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200])],
-  [5.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap"><span style="color:#fbbf24">315</span> / 80 R 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '315 = el ANCHO, en MILÍMETROS', 'ok', [650, 470]); }],
-  [8.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / <span style="color:#fbbf24">80</span> R 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '80 = PERFIL: el costado mide el 80 % del ancho', 'ok', [650, 470]); }],
-  [11.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / 80 <span style="color:#fbbf24">R</span> 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', 'R = RADIAL (la carcasa de hoy)', 'ok', [650, 470]); }],
-  [14.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / 80 R <span style="color:#fbbf24">22.5</span> &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '22.5 = el DIÁMETRO de la LLANTA, en PULGADAS', 'ok', [650, 470]); }],
+  [5.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap"><span style="color:#fbbf24">315</span> / 80 R 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '315 = el ANCHO, en MILÍMETROS', 'ok', [650, 590]); }],
+  [8.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / <span style="color:#fbbf24">80</span> R 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '80 = PERFIL: el costado mide el 80 % del ancho', 'ok', [650, 590]); }],
+  [11.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / 80 <span style="color:#fbbf24">R</span> 22.5 &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', 'R = RADIAL (la carcasa de hoy)', 'ok', [650, 590]); }],
+  [14.0, e => { e.etiqueta('cod', '<span style="white-space:nowrap">315 / 80 R <span style="color:#fbbf24">22.5</span> &nbsp; 156/150 L</span>', 'grande', [650, 200]); e.etiqueta('ex', '22.5 = el DIÁMETRO de la LLANTA, en PULGADAS', 'ok', [650, 590]); }],
   [17.0, e => e.globo('juan', 'Milímetros, por ciento, R y pulgadas. ¡Fácil!')]
 ]
   },

@@ -261,19 +261,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 1
  },
  {
-  "enunciado": "Cuando en la identificación de una llanta de una rueda aparece el signo o símbolo \"x\", ¿a qué se refiere?",
-  "opciones": [
-   "A que está formada de una sola pieza.",
-   "A la forma de la pestaña.",
-   "A que es de aleación ligera.",
-   "Al código que indica el ínice de utilización de la llanta."
-  ],
-  "correcta": 0,
-  "veces": 4,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> en pulgadas; J = forma de la pestaña; <b>x</b> = <b>una sola pieza</b> (un <b>guion \"-\"</b> = varias piezas); 22.5 = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
   "enunciado": "La corrosión electrolítica ataca mayormente a las llantas...",
   "opciones": [
    "de acero estampado.",
@@ -339,19 +326,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 2
  },
  {
-  "enunciado": "Una llanta con designación 10,5J x 20.5, M 24,5 quiere decir que:",
-  "opciones": [
-   "tiene 10,5 pulgadas de largo.",
-   "tiene un diámetro de 20,5 pulgadas.",
-   "tiene 10,5 centímetros de diámetro del espárrago.",
-   "tiene 24,5 pulgadas de ancho."
-  ],
-  "correcta": 1,
-  "veces": 1,
-  "explicacion": "En una llanta <b>12J x 22,5</b>: el primer número = <b>ancho</b> de la llanta en <b>pulgadas</b>; J = forma de la pestaña; x = una sola pieza; el último = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
   "enunciado": "¿Qué ventaja presentan las llantas de aleación frente a las de acero estampado?",
   "opciones": [
    "Ninguna, su utilización es por razones estéticas.",
@@ -365,45 +339,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 2
  },
  {
-  "enunciado": "En una llanta cuya designación sea 12J x 22,5, ¿qué significa el número 12?",
-  "opciones": [
-   "La anchura del perfil.",
-   "El diámetro de la llanta.",
-   "La presión máxima que puede soportar la cubierta que se monte, expresado en bares.",
-   "La forma de la pestaña."
-  ],
-  "correcta": 0,
-  "veces": 1,
-  "explicacion": "En una llanta <b>12J x 22,5</b>: el primer número = <b>ancho</b> de la llanta en <b>pulgadas</b>; J = forma de la pestaña; x = una sola pieza; el último = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
-  "enunciado": "En una llanta cuya designación sea 12J x 22,5, ¿qué significa el número 12?",
-  "opciones": [
-   "La anchura del perfil, expresada en centímetros.",
-   "La anchura del perfil, expresada en milímetros.",
-   "La anchura del perfil, expresada en pulgadas.",
-   "El diámetro del espárrago."
-  ],
-  "correcta": 2,
-  "veces": 1,
-  "explicacion": "En una llanta <b>12J x 22,5</b>: el primer número = <b>ancho</b> de la llanta en <b>pulgadas</b>; J = forma de la pestaña; x = una sola pieza; el último = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
-  "enunciado": "¿Qué signo o símbolo es el que identifica que una llanta está compuesta por varias piezas?",
-  "opciones": [
-   "+.",
-   "-.",
-   "x.",
-   "&."
-  ],
-  "correcta": 1,
-  "veces": 1,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> en pulgadas; J = forma de la pestaña; <b>x</b> = <b>una sola pieza</b> (un <b>guion \"-\"</b> = varias piezas); 22.5 = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
   "enunciado": "¿Qué inconveniente presentan las llantas de aleación?",
   "opciones": [
    "Ninguno.",
@@ -414,19 +349,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "correcta": 3,
   "veces": 1,
   "explicacion": "<b>Aleación</b>: <b>pesa menos</b> (el camión vacío pesa menos) y es de <b>una sola pieza</b>, pero se <b>corroe</b> más (corrosión electrolítica): hay que lavarla, sobre todo cerca del mar.",
-  "paso": 2
- },
- {
-  "enunciado": "Observando transversalmente, una llanta posee unas pestañas laterales que es la zona:",
-  "opciones": [
-   "donde se asienta el talón de la cubierta.",
-   "situada entre los asientos del talón.",
-   "donde se instala la válvula de la cubierta.",
-   "donde se sujeta lateralmente el talón de la cubierta."
-  ],
-  "correcta": 3,
-  "veces": 1,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> de la llanta en pulgadas; <b>J</b> = la <b>forma de la pestaña</b> (el borde que sujeta el talón); <b>x</b> = de <b>una sola pieza</b>; 22.5 = <b>diámetro</b> en pulgadas.",
   "paso": 2
  },
  {
@@ -456,19 +378,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 2
  },
  {
-  "enunciado": "Una llanta con designación 11.5J x 20.5, M 25.0 quiere decir que tiene:",
-  "opciones": [
-   "11,5 pulgadas de largo.",
-   "11,5 pulgadas de anchura del perfil.",
-   "11,5 centímetros de diámetro del espárrago.",
-   "25,0 pulgadas de anchura del perfil."
-  ],
-  "correcta": 1,
-  "veces": 1,
-  "explicacion": "En una llanta <b>12J x 22,5</b>: el primer número = <b>ancho</b> de la llanta en <b>pulgadas</b>; J = forma de la pestaña; x = una sola pieza; el último = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
   "enunciado": "Para facilitar la refrigeración de los elementos frenantes, las llantas...",
   "opciones": [
    "tienen conexiones con el sistema de refrigeración.",
@@ -495,32 +404,6 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 2
  },
  {
-  "enunciado": "En una llanta con designación 12,5J x 21.5, M 23,5, ¿qué indica la letra \"x\"?",
-  "opciones": [
-   "Que lleva espárragos y tuercas.",
-   "Se refiere a los centímetros de diámetro.",
-   "La forma de la pestaña.",
-   "Indica que es monopieza."
-  ],
-  "correcta": 3,
-  "veces": 1,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> en pulgadas; J = forma de la pestaña; <b>x</b> = <b>una sola pieza</b> (un <b>guion \"-\"</b> = varias piezas); 22.5 = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
-  "enunciado": "En una llanta con designación 12,5J x 21.5, M 23,5, ¿qué indica la letra \"J\"?",
-  "opciones": [
-   "La válvula de cuatro vías.",
-   "Se refiere a la distancia entre ejes.",
-   "La forma de la pestaña.",
-   "Indica que es resistente a la torsión centrífuga."
-  ],
-  "correcta": 2,
-  "veces": 1,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> de la llanta en pulgadas; <b>J</b> = la <b>forma de la pestaña</b> (el borde que sujeta el talón); <b>x</b> = de <b>una sola pieza</b>; 22.5 = <b>diámetro</b> en pulgadas.",
-  "paso": 2
- },
- {
   "enunciado": "El equilibrado de las ruedas consiste en la colocación de unos contrapesos...",
   "opciones": [
    "en la cámara.",
@@ -534,6 +417,123 @@ export const PREGUNTAS_NEU_RUEDA = [
   "paso": 2
  },
  {
+  "enunciado": "Cuando en la identificación de una llanta de una rueda aparece el signo o símbolo \"x\", ¿a qué se refiere?",
+  "opciones": [
+   "A que está formada de una sola pieza.",
+   "A la forma de la pestaña.",
+   "A que es de aleación ligera.",
+   "Al código que indica el ínice de utilización de la llanta."
+  ],
+  "correcta": 0,
+  "veces": 4,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "Una llanta con designación 10,5J x 20.5, M 24,5 quiere decir que:",
+  "opciones": [
+   "tiene 10,5 pulgadas de largo.",
+   "tiene un diámetro de 20,5 pulgadas.",
+   "tiene 10,5 centímetros de diámetro del espárrago.",
+   "tiene 24,5 pulgadas de ancho."
+  ],
+  "correcta": 1,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "En una llanta cuya designación sea 12J x 22,5, ¿qué significa el número 12?",
+  "opciones": [
+   "La anchura del perfil.",
+   "El diámetro de la llanta.",
+   "La presión máxima que puede soportar la cubierta que se monte, expresado en bares.",
+   "La forma de la pestaña."
+  ],
+  "correcta": 0,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "En una llanta cuya designación sea 12J x 22,5, ¿qué significa el número 12?",
+  "opciones": [
+   "La anchura del perfil, expresada en centímetros.",
+   "La anchura del perfil, expresada en milímetros.",
+   "La anchura del perfil, expresada en pulgadas.",
+   "El diámetro del espárrago."
+  ],
+  "correcta": 2,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "¿Qué signo o símbolo es el que identifica que una llanta está compuesta por varias piezas?",
+  "opciones": [
+   "+.",
+   "-.",
+   "x.",
+   "&."
+  ],
+  "correcta": 1,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "Observando transversalmente, una llanta posee unas pestañas laterales que es la zona:",
+  "opciones": [
+   "donde se asienta el talón de la cubierta.",
+   "situada entre los asientos del talón.",
+   "donde se instala la válvula de la cubierta.",
+   "donde se sujeta lateralmente el talón de la cubierta."
+  ],
+  "correcta": 3,
+  "veces": 1,
+  "explicacion": "La <b>pestaña</b> es el <b>borde de la llanta que sube</b> a cada costado, como una pared. Contra ella se apoya el <b>talón</b> (el borde de la goma) para que no se salga. En el código de la llanta (12,5 <b>J</b> x 22.5), la <b>letra</b> dice <b>qué forma tiene</b> esa pestaña.",
+  "paso": 3
+ },
+ {
+  "enunciado": "Una llanta con designación 11.5J x 20.5, M 25.0 quiere decir que tiene:",
+  "opciones": [
+   "11,5 pulgadas de largo.",
+   "11,5 pulgadas de anchura del perfil.",
+   "11,5 centímetros de diámetro del espárrago.",
+   "25,0 pulgadas de anchura del perfil."
+  ],
+  "correcta": 1,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "En una llanta con designación 12,5J x 21.5, M 23,5, ¿qué indica la letra \"x\"?",
+  "opciones": [
+   "Que lleva espárragos y tuercas.",
+   "Se refiere a los centímetros de diámetro.",
+   "La forma de la pestaña.",
+   "Indica que es monopieza."
+  ],
+  "correcta": 3,
+  "veces": 1,
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
+ },
+ {
+  "enunciado": "En una llanta con designación 12,5J x 21.5, M 23,5, ¿qué indica la letra \"J\"?",
+  "opciones": [
+   "La válvula de cuatro vías.",
+   "Se refiere a la distancia entre ejes.",
+   "La forma de la pestaña.",
+   "Indica que es resistente a la torsión centrífuga."
+  ],
+  "correcta": 2,
+  "veces": 1,
+  "explicacion": "La <b>pestaña</b> es el <b>borde de la llanta que sube</b> a cada costado, como una pared. Contra ella se apoya el <b>talón</b> (el borde de la goma) para que no se salga. En el código de la llanta (12,5 <b>J</b> x 22.5), la <b>letra</b> dice <b>qué forma tiene</b> esa pestaña.",
+  "paso": 3
+ },
+ {
   "enunciado": "Señale la afirmación incorrecta.",
   "opciones": [
    "La anchura forma parte de la identificación de la llanta.",
@@ -543,8 +543,8 @@ export const PREGUNTAS_NEU_RUEDA = [
   ],
   "correcta": 3,
   "veces": 1,
-  "explicacion": "En <b>12,5J x 22.5</b>: 12,5 = <b>ancho</b> en pulgadas; J = forma de la pestaña; <b>x</b> = <b>una sola pieza</b> (un <b>guion \"-\"</b> = varias piezas); 22.5 = <b>diámetro</b> en pulgadas.",
-  "paso": 2
+  "explicacion": "Código de llanta <b>12,5 J x 22.5</b>: <b>12,5</b> = ancho (de pestaña a pestaña) en <b>pulgadas</b>; <b>J</b> = forma de la pestaña; <b>x</b> = de <b>una sola pieza</b> (un <b>guion \"-\"</b> = de <b>varias piezas</b>, con un aro que se saca); <b>22.5</b> = <b>diámetro</b> en pulgadas.",
+  "paso": 3
  }
 ];
 
