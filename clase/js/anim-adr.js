@@ -6,7 +6,7 @@
 
 const NS = 'http://www.w3.org/2000/svg';
 // Fotos que todavía no llegaron: mientras tanto se usa la cisterna
-const PENDIENTES = { equipo: 'cisterna', accidente: 'cisterna' };
+const PENDIENTES = {};
 const IMG = n => `ilustraciones/adr-${PENDIENTES[n] || n}.webp`;
 const S = 320 / 1376, Y0 = 22;            // fotos de 1376 x 768
 const px = x => +(x * S).toFixed(1), py = y => +(Y0 + y * S).toFixed(1);
@@ -167,8 +167,10 @@ const A = {
     fr: [['AUTORIZACIÓN ESPECIAL', 'Sin ella no se puede ni empezar a cargar.', ['a1']], ['DURA 5 AÑOS', 'Básica; para explosivos o radiactivos, más.', ['a2']],
       ['ALCOHOL', 'Máximo 0,3 g/l en sangre o 0,15 mg/l en aire.', ['a3', 'a4']]] },
   equipo: { t: 'EL EQUIPO DEL CAMIÓN', f: 'equipo',
-    fr: [['PARA CADA PERSONA', 'Una linterna y un chaleco fluorescente.', []], ['PARA EL CAMIÓN', 'Un calzo, protección para los ojos y dos señales autoportantes (conos).', []],
-      ['EXTINTORES', 'Siempre. 5 t o 10 t: mínimo 2. Revisión cada 5 años.', []]] },
+    x: caja('e-lin', px(595), py(644), px(98), px(47), '#22d3ee') + caja('e-cha', px(695), py(532), px(171), px(159), '#22d3ee') + caja('e-cal', px(330), py(597), px(140), px(94), '#22d3ee') + caja('e-con', px(477), py(530), px(114), px(161), '#22d3ee') + caja('e-gaf', px(885), py(632), px(98), px(59), '#22d3ee') + caja('e-lav', px(987), py(587), px(54), px(101), '#22d3ee') + caja('e-ext', px(607), py(517), px(79), px(141), '#ef4444') + caja('e-v16', px(1072), py(622), px(123), px(69), '#fbbf24'),
+    fr: [['PARA CADA PERSONA', 'Una linterna y un chaleco fluorescente.', ['e-lin', 'e-cha']], ['PARA EL CAMIÓN', 'Un calzo, gafas, lavaojos y dos señales autoportantes (conos).', ['e-cal', 'e-gaf', 'e-lav', 'e-con']],
+      ['EXTINTORES', 'Siempre. 5 t o 10 t: mínimo 2. Revisión cada 5 años.', ['e-ext']],
+      ['Y LA BALIZA V-16', 'Como todo camión en España. Los triángulos ya no valen.', ['e-v16']]] },
   quien: { t: 'QUIÉN HACE QUÉ', f: 'carga', x: tag('q1', 70, 44, 'EXPEDIDOR') + tag('q2', 160, 44, 'CARGADOR') + tag('q3', 255, 44, 'TRANSPORTISTA'),
     fr: [['EXPEDIDOR', 'El dueño del envío: prepara todo y elige los envases.', ['q1']], ['CARGADOR', 'El responsable de la carga: calzo, sin fugas.', ['q2']],
       ['TRANSPORTISTA', 'Elige camión y conductor, pone paneles, papeles y equipo.', ['q3']],
@@ -186,9 +188,9 @@ const A = {
       `<g id="s80"><circle cx="290" cy="70" r="26" fill="#fff" stroke="#dc2626" stroke-width="6"/><text x="290" y="78" text-anchor="middle" font-size="22" font-weight="900">80</text></g>`,
     fr: [['CIUDAD Y TRAVESÍA: 40', 'Con mercancías peligrosas, máximo 40 km/h.', ['s40']], ['AUTOPISTA Y AUTOVÍA: 80', 'Máximo 80 km/h.', ['s80']],
       ['DOMINGOS Y FESTIVOS', 'Solo con excepción (gas de casa, gasolineras, hospitales) o permiso.', []]] },
-  accidente: { t: 'SI PASA ALGO', f: 'accidente', x: (PENDIENTES.accidente ? V16(px(330), py(240)) : '') ,
-    fr: [['PRIMERO: LAS INSTRUCCIONES ESCRITAS', 'Mirá qué dicen y hacelo.', []], ['AVISAR', 'Baliza V-16 en el techo, chaleco y llamar a emergencias.', ['v16']],
-      ['NO', 'Fumar, chispas, pisar lo derramado o apagar el fuego de la carga.', []], ['PROTEGERSE', 'Equipo de protección antes de acercarse a una fuga.', []]] },
+  accidente: { t: 'SI PASA ALGO', f: 'accidente', x: caja('v16', px(454), py(122), px(116), px(54), '#fbbf24') + caja('a-con', px(677), py(337), px(121), px(289), '#22d3ee') + caja('a-ch', px(782), py(574), px(308), px(52), '#ef4444') + caja('a-sen', px(1104), py(490), px(188), px(118), '#f97316'),
+    fr: [['PRIMERO: LAS INSTRUCCIONES ESCRITAS', 'Mirá qué dicen y hacelo.', []], ['AVISAR', 'Baliza V-16 en el techo, chaleco, conos y llamar a emergencias.', ['v16', 'a-con', 'a-sen']],
+      ['NO', 'Fumar, chispas, pisar lo derramado o apagar el fuego de la carga.', ['a-ch']], ['PROTEGERSE', 'Equipo de protección antes de acercarse a una fuga.', []]] },
   fuego: { t: 'EL TRIÁNGULO DEL FUEGO', f: 'fuego',
     x: `<polygon points="160,40 230,160 90,160" fill="none" stroke="#fbbf24" stroke-width="3"/>` + tag('f1', 160, 34, 'COMBUSTIBLE', '#fb923c') + tag('f2', 250, 168, 'CALOR', '#ef4444') + tag('f3', 70, 168, 'COMBURENTE (oxígeno)', '#38bdf8'),
     fr: [['3 COSAS JUNTAS', 'Combustible + comburente + calor = triángulo del fuego.', ['f1', 'f2', 'f3']], ['+ REACCIÓN EN CADENA', 'Son 4: el tetraedro del fuego.', ['f1', 'f2', 'f3']],
