@@ -3650,7 +3650,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 3,
   "veces": 4,
   "explicacion": "La cisterna se limpia <b>antes de cargar un producto que no es compatible</b> con el anterior.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Se puede entrar en el interior de una cisterna que ha transportado mercancías peligrosas si aún no se ha limpiado?",
@@ -3663,7 +3663,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 0,
   "veces": 4,
   "explicacion": "A una cisterna sin limpiar no se entra <b>nunca</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Qué tipos de materias peligrosas pueden transportarse en cisternas?",
@@ -3676,7 +3676,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 3,
   "veces": 4,
   "explicacion": "En cisterna pueden ir materias líquidas, en polvo o en granitos: <b>todas</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿A quién se denomina expedidor en el transporte de mercancías peligrosas por carretera?",
@@ -3780,7 +3780,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 1,
   "veces": 3,
   "explicacion": "No hace falta certificado de lavado si viene de descargar y va a cargar <b>lo mismo u otro compatible</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿En qué supuestos una unidad de transporte que lleve mercancías peligrosas puede llevar más de un remolque o semirremolque?",
@@ -3793,7 +3793,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 3,
   "explicacion": "Con mercancías peligrosas se puede llevar <b>un solo remolque</b>: nunca más de uno.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Qué debe hacerse cuándo se estacione un vehículo que transporte mercancías peligrosas?",
@@ -3806,7 +3806,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 3,
   "explicacion": "Al estacionar, siempre el <b>freno de estacionamiento</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿A quién se denomina cargador en el transporte de mercancías peligrosas por carretera?",
@@ -3897,7 +3897,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 1,
   "veces": 2,
   "explicacion": "Con mercancías peligrosas se puede llevar <b>un solo remolque</b>: nunca más de uno.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "El grado de llenado de una cisterna que debe transportar mercancías peligrosas:",
@@ -4105,7 +4105,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 1,
   "explicacion": "Durante la carga, el camión tiene que estar <b>bien inmovilizado</b> (que no se mueva).",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "Con carácter previo a la operación de carga de mercancías peligrosas de la cisterna, ¿cuál será una de las comprobaciones que debe efectuarse?",
@@ -4118,7 +4118,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 0,
   "veces": 1,
   "explicacion": "Antes de cargar la cisterna: que lo que quedó adentro sea <b>compatible</b> con lo nuevo.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Cuándo es obligatorio limpiar el interior de una cisterna que transporta mercancías peligrosas?",
@@ -4131,7 +4131,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 3,
   "veces": 1,
   "explicacion": "La cisterna se limpia <b>antes de cargar un producto que no es compatible</b> con el anterior.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "Durante el transporte, ¿puede haber algún resto peligroso en el exterior de la cisterna?",
@@ -4144,7 +4144,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 3,
   "veces": 1,
   "explicacion": "Por fuera de la cisterna no puede quedar <b>ningún resto</b> peligroso, nunca.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Pueden transportarse productos alimenticios en una cisterna utilizada para el transporte de mercancías peligrosas?",
@@ -4157,7 +4157,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 1,
   "explicacion": "Comida en una cisterna de mercancías peligrosas: solo si se tomaron <b>medidas para cuidar la salud</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Qué materias peligrosas pueden transportarse en cisterna?",
@@ -4170,7 +4170,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 1,
   "explicacion": "En cisterna se llevan solo las materias que el <b>ADR dice expresamente</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Qué mercancías peligrosas pueden transportarse en cisterna?",
@@ -4183,7 +4183,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 1,
   "veces": 1,
   "explicacion": "En cisterna se llevan solo las materias que el <b>ADR dice expresamente</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "Según el ADR, las materias que corran peligro de reaccionar peligrosamente entre sí no deberán cargarse en compartimentos contiguos de la cisterna, excepto si:",
@@ -4196,7 +4196,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 3,
   "veces": 1,
   "explicacion": "Materias que reaccionan entre sí, en compartimentos pegados: solo con tabique grueso, espacio vacío o un compartimento vacío en el medio: <b>todas</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "Cuando se realiza un transporte de mercancías peligrosas en una cisterna cargada de líquido, el movimiento de la carga afecta...",
@@ -4209,7 +4209,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 1,
   "explicacion": "El líquido que se mueve en la cisterna afecta al control del camión: <b>efecto ola</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "¿Qué medidas especiales deben tomarse cuando se estacione un vehículo cargado con mercancías peligrosas?",
@@ -4222,7 +4222,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 2,
   "veces": 1,
   "explicacion": "Al estacionar, no hay medidas especiales salvo las que el <b>ADR dice expresamente</b>.",
-  "paso": 2
+  "paso": 3
  },
  {
   "enunciado": "Durante el transporte de mercancías peligrosas, ¿qué ocurre si se supera la temperatura máxima de regulación?",
@@ -4235,7 +4235,7 @@ export const PREGUNTAS_ADR_QUIEN = [
   "correcta": 1,
   "veces": 1,
   "explicacion": "Si se pasa la temperatura máxima, puede hacer falta un <b>procedimiento de emergencia</b>.",
-  "paso": 2
+  "paso": 3
  }
 ];
 export const PREGUNTAS_ADR_RUTA = [

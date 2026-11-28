@@ -589,6 +589,36 @@ export const PASOS_ADR_QUIEN = [
   },
   {
     "tipo": "quien",
+    "titulo": "Ojo: las mismas palabras no significan lo mismo",
+    "texto": [
+      "Esto confunde a todos: en el tema del <b>contrato</b> (Mercado del transporte) y en <b>ADR</b> aparecen palabras parecidas, pero <b>no significan lo mismo</b>.",
+      "<b>En el contrato:</b> el <b>cargador</b> es el que <b>contrata</b> el transporte; el <b>expedidor</b>, el que <b>entrega</b> la carga al camión; el <b>porteador</b>, el que <b>la lleva</b>; y el <b>destinatario</b>, el que la recibe.",
+      "<b>En ADR:</b> el <b>expedidor</b> es aquel <b>por cuya cuenta se hace el transporte</b> (el dueño del envío); el <b>cargador</b> es el responsable de <b>cargar</b>; el <b>transportista</b> es el que <b>hace el transporte</b> (lo que en el contrato se llama porteador); y el <b>destinatario</b> recibe.",
+      "<b>Truco para ADR:</b> el <b>cargador CARGA</b> (lo dice la palabra). El dueño del envío es el <b>expedidor</b>. Y <b>transportista = porteador</b>: el que lleva."
+    ],
+    "sim": "quieto",
+    "vista": "perspectiva",
+    escena: { lopez: ['lopez', 200], ana: ['ana', 420], camion: ['camion', 680], juan: ['juan', 880], expedidor: ['expedidor', 180], cargador: ['cargador', 400], transportista: ['transportista', 640], cisterna: ['cisterna', 860], destinataria: ['destinataria', 1040] },
+    base: [],
+    linea: [
+      [0.2, e => e.titulo('EN EL CONTRATO (Mercado del transporte)')],
+      [0.5, e => { e.mostrar('lopez'); e.etiqueta('lopez', 'CARGADOR = el que CONTRATA', 'ok'); }],
+      [3.0, e => { e.mostrar('ana'); e.etiqueta('ana', 'EXPEDIDOR = ENTREGA la carga al camión', 'aviso'); }],
+      [5.6, e => { e.mostrar('camion'); e.mostrar('juan'); e.etiqueta('juan', 'PORTEADOR = el que la LLEVA', 'precio'); }],
+      [9.0, e => { e.titulo('EN ADR (mercancías peligrosas)'); ['lopez', 'ana', 'camion', 'juan'].forEach(n => e.ocultar(n)); e.mostrar('expedidor'); e.etiqueta('expedidor', 'EXPEDIDOR = el DUEÑO del envío', 'aviso'); }],
+      [11.8, e => { e.mostrar('cargador'); e.etiqueta('cargador', 'CARGADOR = el que CARGA', 'ok'); }],
+      [14.4, e => { e.mostrar('transportista'); e.mostrar('cisterna'); e.etiqueta('transportista', 'TRANSPORTISTA = el que lo LLEVA (= porteador)', 'precio'); }],
+      [17.2, e => { e.mostrar('destinataria'); e.etiqueta('destinataria', 'DESTINATARIO = recibe', 'ok'); }],
+      [20.0, e => { e.titulo(null); e.etiqueta('tr', 'En ADR: el cargador CARGA. El dueño del envío es el EXPEDIDOR', 'grande', [560, 150]); }]
+    ],
+    "figura": {
+      "anim": "quien",
+      "titulo": "Ojo con las palabras",
+      "texto": "Contrato y ADR usan palabras parecidas con otro significado."
+    }
+  },
+  {
+    "tipo": "quien",
     "titulo": "Al cargar la cisterna",
     "texto": [
       "Durante la carga, el camión tiene que estar <b>bien inmovilizado</b>, y al estacionar, siempre con el <b>freno de estacionamiento</b>.",
